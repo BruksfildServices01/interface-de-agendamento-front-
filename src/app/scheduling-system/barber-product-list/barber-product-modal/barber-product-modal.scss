@@ -1,0 +1,56 @@
+.bp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bp-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.bp-modal__card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 16px;
+
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+
+  padding: var(--space-4);
+}
+
+.bp-modal__header {
+  margin-bottom: var(--space-3);
+}
+
+.bp-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    span {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-soft);
+    }
+  }
+}
+
+.bp-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}

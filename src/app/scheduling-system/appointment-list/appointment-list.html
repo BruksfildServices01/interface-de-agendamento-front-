@@ -1,0 +1,72 @@
+<section class="ap">
+
+  <!-- HEADER -->
+  <header class="ap__header">
+    <div class="ap__header-left">
+      <h1 class="ap__title">Agendamentos marcados</h1>
+      <span class="ap__subtitle">
+        {{ selectedDate | date:'fullDate' }}
+      </span>
+    </div>
+
+    <input
+      type="date"
+      class="ap__date"
+      [value]="selectedDate"
+      (change)="onDateChange($event)"
+    />
+  </header>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="ap__state">
+    Carregando agendamentos…
+  </div>
+
+  <!-- LISTA -->
+  <div class="ap__list" *ngIf="!loading">
+
+    <article
+      class="ap-card"
+      *ngFor="let ap of appointments; trackBy: trackById"
+    >
+      <!-- HORA -->
+      <div class="ap-card__time">
+        {{ formatTime(ap.start_time) }}
+      </div>
+
+      <!-- CONTEÚDO -->
+      <div class="ap-card__body">
+
+        <div class="ap-card__top">
+          <strong class="ap-card__client">
+            {{ ap.client?.name || 'Cliente' }}
+          </strong>
+
+          <span
+            class="ap-card__status"
+            [class.scheduled]="ap.status === 'scheduled'"
+            [class.completed]="ap.status === 'completed'"
+            [class.cancelled]="ap.status === 'cancelled'"
+          >
+            {{ statusLabel(ap.status) }}
+          </span>
+        </div>
+
+        <div class="ap-card__service">
+          {{ ap.barber_product?.name || 'Serviço' }}
+        </div>
+
+        <div class="ap-card__notes" *ngIf="ap.notes">
+          “{{ ap.notes }}”
+        </div>
+
+      </div>
+    </article>
+
+    <!-- EMPTY -->
+    <div *ngIf="appointments.length === 0" class="ap__state">
+      Nenhum agendamento para este dia
+    </div>
+
+  </div>
+</section>

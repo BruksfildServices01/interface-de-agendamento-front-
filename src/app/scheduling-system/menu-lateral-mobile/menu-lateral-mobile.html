@@ -1,0 +1,40 @@
+<!-- Overlay -->
+<button
+  type="button"
+  class="ml-m__overlay"
+  *ngIf="aberto"
+  aria-label="Fechar menu"
+  (click)="fechar()"
+></button>
+
+<!-- TOP SHEET -->
+<nav class="ml-m" [class.ml-m--fechado]="!aberto" aria-label="Menu">
+  <header class="ml-m__head">
+    <div class="ml-m__brand">
+      <strong class="ml-m__title">Menu</strong>
+    </div>
+
+    <button
+      type="button"
+      class="ml-m__close"
+      (click)="fechar()"
+      aria-label="Fechar"
+      title="Fechar"
+    >
+      ✕
+    </button>
+  </header>
+
+  <div class="ml-m__body">
+    <a
+      *ngFor="let l of links"
+      class="ml-m__link"
+      [routerLink]="l.to"
+      routerLinkActive="is-active"
+      (click)="fechar()"
+    >
+      <span class="ml-m__ico">{{ l.icon }}</span>
+      <span class="ml-m__lbl">{{ l.label }}</span>
+    </a>
+  </div>
+</nav>

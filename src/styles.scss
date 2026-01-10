@@ -1,0 +1,311 @@
+/* ==================================================
+   🎨 DESIGN SYSTEM GLOBAL
+================================================== */
+
+/* ---------- 1. CSS VARS (TOKENS) ---------- */
+
+:root {
+  /* FUNDO GERAL */
+  --bg-body: #020617;
+  --bg-elevated: #0f172a;      /* cards / blocos */
+  --bg-elevated-soft: #111827; /* áreas internas, se precisar */
+
+  /* CORES PRINCIPAIS */
+  --primary: #22c55e;
+  --primary-soft: rgba(34, 197, 94, 0.15);
+  --primary-strong: #16a34a;
+  --accent: #38bdf8;
+
+  /* TEXTO E BORDAS */
+  --text-main: #e5e7eb;
+  --text-soft: #9ca3af;
+  --text-muted: #6b7280;
+  --text-danger: #fca5a5;
+
+  --danger: #ef4444;
+  --danger-soft: rgba(239, 68, 68, 0.15);
+
+  --border-subtle: #1f2937;
+
+  /* RADIUS */
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* SOMBRAS */
+  --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.8);
+  --shadow-light: 0 10px 24px rgba(15, 23, 42, 0.5);
+
+  /* TRANSIÇÕES */
+  --transition-fast: 0.16s ease-out;
+  --transition-med: 0.24s ease-out;
+
+  /* ESPAÇAMENTOS */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+
+  /* FONT SIZES */
+  --font-size-sm: 0.85rem;
+  --font-size-md: 0.95rem;
+  --font-size-lg: 1.05rem;
+  --font-size-xl: 1.3rem;
+
+  /* ALIASES (pra código ficar mais legível) */
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+
+  --color-text-main: var(--text-main);
+  --color-text-soft: var(--text-soft);
+  --color-text-muted: var(--text-muted);
+  --color-text-danger: var(--text-danger);
+
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --color-border-subtle: var(--border-subtle);
+}
+
+/* ---------- 2. RESET LEVE ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text',
+    'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #020617 0, #020617 45%, #000 100%);
+  color: var(--color-text-main);
+  min-height: 100vh;
+}
+
+/* links sem sublinhado padrão */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- 3. TIPOGRAFIA BÁSICA ---------- */
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 var(--space-2);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #f9fafb;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+
+h2 {
+  font-size: var(--font-size-xl);
+}
+
+h3 {
+  font-size: var(--font-size-lg);
+}
+
+p {
+  margin: 0 0 var(--space-2);
+}
+
+/* ---------- 4. BOTÕES GENÉRICOS ---------- */
+
+button {
+  font: inherit;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  padding: 7px 14px;
+  cursor: pointer;
+
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-strong) 100%
+  );
+  color: #02140a;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  box-shadow: 0 10px 24px rgba(34, 197, 94, 0.22);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-med),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(34, 197, 94, 0.34);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.7);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* Botão secundário (bordado) */
+button.button-secondary {
+  background: transparent;
+  border-color: rgba(148, 163, 184, 0.6);
+  color: var(--color-text-soft);
+  box-shadow: none;
+}
+
+button.button-secondary:hover:not(:disabled) {
+  background: rgba(15, 23, 42, 0.96);
+  color: var(--color-text-main);
+}
+
+/* Botão de perigo */
+button.button-danger {
+  background: linear-gradient(135deg, var(--color-danger) 0%, #b91c1c 100%);
+  color: #fef2f2;
+  box-shadow: 0 10px 24px rgba(248, 113, 113, 0.26);
+}
+
+/* ---------- 5. INPUTS / SELECTS BÁSICOS ---------- */
+
+input[type='text'],
+input[type='number'],
+input[type='date'],
+select {
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  padding: 7px 12px;
+  color: var(--color-text-main);
+  font: inherit;
+  outline: none;
+  min-width: 0;
+
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+input::placeholder {
+  color: var(--color-text-muted);
+}
+
+input:focus,
+select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.35);
+  transform: translateY(-0.5px);
+}
+
+/* Variante mais quadradinha, se quiser usar em algum form */
+.rounded-input {
+  border-radius: var(--radius-md) !important;
+}
+
+/* ---------- 8. AJUSTE MOBILE LEVE ---------- */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 0.9rem;
+  }
+
+  table {
+    font-size: 0.8rem;
+  }
+
+  th,
+  td {
+    padding: 8px 10px;
+  }
+}
+
+/* ==================================================
+   APP SHELL (layout global)
+================================================== */
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Conteúdo */
+.app-shell__content {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+}
+
+/* Topbar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(10px);
+}
+
+.topbar__menu-btn {
+  display: none; /* só mobile */
+}
+
+/* Overlay (fecha drawer no mobile) */
+.app-shell__overlay {
+  display: none;
+  pointer-events: none;
+  border: 0;
+  background: transparent;
+}
+
+/* Mobile rules */
+@media (max-width: 900px) {
+  .topbar__menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app-shell__overlay.is-visible {
+    display: block;
+    pointer-events: auto;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, 0.45);
+  }
+}

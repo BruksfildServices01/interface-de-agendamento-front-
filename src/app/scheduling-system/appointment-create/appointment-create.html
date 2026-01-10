@@ -1,0 +1,104 @@
+<section class="wd">
+
+  <!-- HEADER -->
+  <header class="wd__header">
+    <h1 class="wd__title">Horários de Trabalho</h1>
+    <p class="wd__subtitle">
+      Configure seus dias, horários e almoço
+    </p>
+  </header>
+
+  <!-- LISTA DE DIAS -->
+  <div class="wd__days">
+    <button
+      type="button"
+      class="wd-day"
+      *ngFor="let day of days()"
+      (click)="openDay(day)"
+      [class.inactive]="!day.active"
+    >
+      <div class="wd-day__left">
+        <span class="wd-day__label">
+          {{ weekdayLabel(day.weekday) }}
+        </span>
+
+        <span class="wd-day__time" *ngIf="day.active">
+          {{ day.start_time }} – {{ day.end_time }}
+        </span>
+
+        <span class="wd-day__off" *ngIf="!day.active">
+          Fechado
+        </span>
+      </div>
+
+      <div class="wd-day__right">
+        <span class="wd-day__chevron">›</span>
+      </div>
+    </button>
+  </div>
+
+  <!-- MODAL -->
+  <div class="wd-modal" *ngIf="modalOpen()">
+    <div class="wd-modal__backdrop" (click)="closeModal()"></div>
+
+    <div class="wd-modal__card">
+      <header class="wd-modal__header">
+        <h2>
+          {{ weekdayLabel(editingDay()?.weekday ?? 0) }}
+        </h2>
+        <button class="wd-modal__close" (click)="closeModal()">×</button>
+      </header>
+
+      <div class="wd-modal__body" *ngIf="editingDay() as day">
+
+        <!-- ATIVO -->
+        <label class="wd-toggle">
+          <input type="checkbox" [(ngModel)]="day.active" />
+          <span>Dia ativo</span>
+        </label>
+
+        <!-- HORÁRIO -->
+        <div class="wd-row" *ngIf="day.active">
+          <div>
+            <label>Início</label>
+            <input type="time" [(ngModel)]="day.start_time" />
+          </div>
+
+          <div>
+            <label>Fim</label>
+            <input type="time" [(ngModel)]="day.end_time" />
+          </div>
+        </div>
+
+        <!-- ALMOÇO -->
+        <div class="wd-lunch" *ngIf="day.active">
+          <label class="wd-lunch__title">Almoço (opcional)</label>
+
+          <div class="wd-row">
+            <div>
+              <label>Início</label>
+              <input type="time" [(ngModel)]="day.lunch_start" />
+            </div>
+
+            <div>
+              <label>Fim</label>
+              <input type="time" [(ngModel)]="day.lunch_end" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <footer class="wd-modal__footer">
+        <button class="btn ghost" (click)="closeModal()">
+          Cancelar
+        </button>
+
+        <button class="btn primary" (click)="saveDay()">
+          Salvar
+        </button>
+      </footer>
+    </div>
+  </div>
+
+</section>

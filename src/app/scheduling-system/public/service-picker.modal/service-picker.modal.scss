@@ -1,0 +1,219 @@
+/* ==================================================
+   SERVICE PICKER MODAL — MOBILE FIRST
+   Usa 100% os tokens do styles.scss
+================================================== */
+
+/* =========================
+   MODAL BASE
+========================= */
+.tm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--bg-body);
+  color: var(--color-text-main);
+}
+
+/* =========================
+   HEADER
+========================= */
+.tm-modal__header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  padding: var(--space-4);
+
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.tm-modal__close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-main);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.tm-modal__title {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+
+  strong {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+  }
+
+  span {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+}
+
+/* =========================
+   SEARCH
+========================= */
+.tm-modal__search {
+  padding: var(--space-3) var(--space-4);
+
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+/* =========================
+   FILTER TOGGLE
+========================= */
+.filter-toggle {
+  margin: var(--space-3) var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: transparent;
+  border: 1px dashed var(--color-border-subtle);
+  border-radius: var(--radius-md);
+
+  color: var(--color-text-soft);
+  font-size: var(--font-size-sm);
+
+  cursor: pointer;
+}
+
+/* =========================
+   FILTERS CONTAINER
+========================= */
+.filters {
+  margin: var(--space-3) var(--space-4) var(--space-4);
+  padding: var(--space-4);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4); /* 🔥 MAIS RESPIRO */
+
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.filters__row {
+  display: flex;
+  gap: var(--space-3);
+}
+
+/* =========================
+   FILTER ACTIONS
+========================= */
+.filters__actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.filters__actions button {
+  flex: 1;
+}
+
+/* =========================
+   CONTENT (LIST)
+========================= */
+.tm-modal__content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  padding: var(--space-4);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4); /* 🔥 espaçamento confortável */
+}
+
+/* =========================
+   SERVICE CARD
+========================= */
+.service-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+
+  width: 100%;
+  padding: var(--space-4);
+
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+
+  color: var(--color-text-main);
+  text-align: left;
+  cursor: pointer;
+
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.service-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-light);
+}
+
+.service-card:active {
+  transform: translateY(1px);
+}
+
+/* =========================
+   CARD CONTENT
+========================= */
+.service-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+
+  strong {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+  }
+
+  span {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-soft);
+  }
+}
+
+/* =========================
+   CARD META
+========================= */
+.service-card__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* =========================
+   EMPTY / LOADING
+========================= */
+.tm-modal__empty {
+  margin: var(--space-5) 0;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}

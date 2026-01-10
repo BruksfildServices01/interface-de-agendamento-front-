@@ -1,0 +1,100 @@
+<section class="tm-modal">
+
+  <!-- HEADER -->
+  <header class="tm-modal__header">
+    <button
+      type="button"
+      class="tm-modal__close"
+      (click)="close.emit()"
+    >
+      ←
+    </button>
+
+    <div class="tm-modal__title">
+      <strong>Escolher horário</strong>
+      <span>Selecione a data e o horário</span>
+    </div>
+  </header>
+
+  <!-- DATE -->
+  <div class="tm-modal__date">
+    <label class="tm-label">Data</label>
+    <input
+      type="date"
+      class="input"
+      [min]="minDate()"
+      [(ngModel)]="date"
+      (change)="load()"
+    />
+  </div>
+
+  <!-- FILTERS -->
+  <div class="time-filters">
+  <button
+    type="button"
+    class="time-filter"
+    [class.active]="period() === 'morning'"
+    (click)="setPeriod('morning')"
+  >
+    🌅 Manhã
+  </button>
+
+  <button
+    type="button"
+    class="time-filter"
+    [class.active]="period() === 'afternoon'"
+    (click)="setPeriod('afternoon')"
+  >
+    ☀️ Tarde
+  </button>
+
+  <button
+    type="button"
+    class="time-filter"
+    [class.active]="period() === 'evening'"
+    (click)="setPeriod('evening')"
+  >
+    🌙 Noite
+  </button>
+
+  <button
+    type="button"
+    class="time-filter reset"
+    *ngIf="period()"
+    (click)="setPeriod(null)"
+  >
+    Limpar
+  </button>
+</div>
+
+
+  <!-- CONTENT -->
+  <div class="tm-modal__content">
+
+    <!-- LOADING -->
+    <p class="tm-modal__empty" *ngIf="loading()">
+      Carregando horários...
+    </p>
+
+    <!-- SLOTS -->
+    <div class="slots" *ngIf="!loading() && filteredSlots().length">
+      <button
+        class="slot-card"
+        *ngFor="let s of filteredSlots()"
+        (click)="pick(s)"
+      >
+        {{ s.start }}
+      </button>
+    </div>
+
+    <!-- EMPTY -->
+    <p
+      class="tm-modal__empty"
+      *ngIf="!loading() && !filteredSlots().length"
+    >
+      Nenhum horário disponível para este período.
+    </p>
+
+  </div>
+
+</section>

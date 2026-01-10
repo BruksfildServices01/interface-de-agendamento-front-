@@ -1,0 +1,123 @@
+:host {
+  display: block;
+}
+
+.ml-d {
+  height: 100dvh;
+  width: 216px;
+  min-width: 216px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #020617;
+  border-right: 1px solid rgba(148, 163, 184, 0.16);
+
+  transition: width 0.18s ease, min-width 0.18s ease;
+}
+
+.ml-d--fechado {
+  width: 64px;
+  min-width: 64px;
+}
+
+/* Header */
+.ml-d__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.ml-d__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Título simples */
+.ml-d__title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: rgba(226, 232, 240, 0.95);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Toggle */
+.ml-d__toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.55);
+  color: rgba(226, 232, 240, 0.92);
+
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Links */
+.ml-d__body {
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ml-d__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 10px;
+  border-radius: 14px;
+
+  text-decoration: none;
+  color: rgba(226, 232, 240, 0.84);
+  border: 1px solid transparent;
+
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.ml-d__link:hover {
+  background: rgba(15, 23, 42, 0.55);
+  color: rgba(226, 232, 240, 0.96);
+}
+
+.ml-d__link.is-active,
+.ml-d__link.router-link-active {
+  background: rgba(99, 102, 241, 0.14);
+  border-color: rgba(99, 102, 241, 0.25);
+  color: rgba(226, 232, 240, 0.98);
+}
+
+.ml-d__ico {
+  width: 22px;
+  display: inline-flex;
+  justify-content: center;
+  font-size: 1.05rem;
+}
+
+.ml-d__lbl {
+  font-size: 0.92rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+  :host {
+    display: none !important;
+  }
+}

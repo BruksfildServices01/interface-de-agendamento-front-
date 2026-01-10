@@ -1,0 +1,92 @@
+<div class="bp-modal" *ngIf="open">
+  <!-- Overlay -->
+  <div
+    class="bp-modal__overlay"
+    (click)="cancel()"
+  ></div>
+
+  <!-- Card -->
+  <div class="bp-modal__card">
+    <header class="bp-modal__header">
+      <h2>Novo serviço</h2>
+    </header>
+
+    <form class="bp-modal__form" (ngSubmit)="submit()">
+      <label>
+        <span>Nome</span>
+        <input
+          [(ngModel)]="form.name"
+          name="name"
+          required
+          [disabled]="loading"
+        />
+      </label>
+
+      <label>
+        <span>Descrição</span>
+        <input
+          [(ngModel)]="form.description"
+          name="description"
+          [disabled]="loading"
+        />
+      </label>
+
+      <label>
+        <span>Categoria</span>
+        <select
+          [(ngModel)]="form.category"
+          name="category"
+          [disabled]="loading"
+        >
+          <option value="">Selecione</option>
+          <option value="corte">Corte</option>
+          <option value="barba">Barba</option>
+          <option value="combo">Combo</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Duração (min)</span>
+        <input
+          type="number"
+          [(ngModel)]="form.duration_min"
+          name="duration_min"
+          min="5"
+          required
+          [disabled]="loading"
+        />
+      </label>
+
+      <label>
+        <span>Preço</span>
+        <input
+          type="number"
+          [(ngModel)]="form.price"
+          name="price"
+          min="0"
+          step="0.01"
+          required
+          [disabled]="loading"
+        />
+      </label>
+
+      <div class="bp-modal__actions">
+        <button
+          type="button"
+          class="button-secondary"
+          (click)="cancel()"
+          [disabled]="loading"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          [disabled]="loading"
+        >
+          {{ loading ? 'Salvando…' : 'Salvar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

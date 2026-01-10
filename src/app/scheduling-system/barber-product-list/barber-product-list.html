@@ -1,0 +1,109 @@
+<section class="bp">
+  <!-- =========================
+       Header fixo
+  ========================= -->
+  <header class="bp__header">
+    <h1 class="bp__title">Serviços</h1>
+
+    <button class="bp__add" (click)="openCreate()">
+      + Novo serviço
+    </button>
+  </header>
+
+  <!-- =========================
+       Filtros fixos
+  ========================= -->
+  <div class="bp__filters">
+    <input
+      type="text"
+      placeholder="Buscar serviço"
+      [(ngModel)]="filterText"
+    />
+
+    <select [(ngModel)]="filterCategory">
+      <option value="">Categoria</option>
+      <option value="corte">Corte</option>
+      <option value="barba">Barba</option>
+      <option value="combo">Combo</option>
+    </select>
+
+    <select [(ngModel)]="filterPrice">
+      <option value="">Preço</option>
+      <option value="low">Mais barato</option>
+      <option value="high">Mais caro</option>
+    </select>
+  </div>
+
+  <!-- =========================
+       Estados
+  ========================= -->
+  <div *ngIf="loading" class="bp__state">
+    Carregando serviços…
+  </div>
+
+  <div *ngIf="error" class="bp__state bp__state--error">
+    {{ error }}
+  </div>
+
+  <!-- =========================
+       Lista (ÚNICO SCROLL)
+  ========================= -->
+  <div class="bp__list" *ngIf="!loading && !error">
+    <article
+      class="bp-card"
+      *ngFor="let product of filteredProducts"
+    >
+      <div class="bp-card__main">
+        <h3 class="bp-card__name">
+          {{ product.name }}
+        </h3>
+
+        <p class="bp-card__meta">
+          R$ {{ product.price | number:'1.2-2' }} •
+          {{ product.durationMin }} min
+        </p>
+
+        <p
+          class="bp-card__desc"
+          *ngIf="product.description"
+        >
+          {{ product.description }}
+        </p>
+      </div>
+
+      <div class="bp-card__actions">
+        <button
+          class="bp-card__edit"
+          type="button"
+        >
+          Editar
+        </button>
+
+        <button
+          class="bp-card__delete"
+          type="button"
+        >
+          Excluir
+        </button>
+      </div>
+    </article>
+
+    <div *ngIf="filteredProducts.length === 0" class="bp__state">
+      Nenhum serviço encontrado.
+    </div>
+  </div>
+</section>
+
+<!-- =========================
+     MODAL — FORA DA SECTION
+========================= -->
+<app-barber-product-modal
+  [open]="showCreateModal"
+  [loading]="loading"
+  (close)="closeCreate()"
+  (save)="saveProduct($event)"
+></app-barber-product-modal>
+
+
+
+

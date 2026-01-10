@@ -1,0 +1,87 @@
+/* =========================
+   APP SHELL (estrutura base)
+========================= */
+
+.cl-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg-body);
+}
+
+.cl-shell--drawer-open {
+  overflow: hidden;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.cl-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.cl-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  padding: var(--space-3) var(--space-4);
+
+  background: rgba(2, 6, 23, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.cl-topbar__menu-btn {
+  font-size: 1.3rem;
+  background: transparent;
+  border: none;
+  color: var(--color-text-main);
+  padding: 4px 8px;
+}
+
+.cl-topbar__brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.cl-topbar__name {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.cl-topbar__desc {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.cl-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-4);
+}
+
+@media (max-width: 900px) {
+  .cl-content {
+    padding: var(--space-3);
+  }
+}

@@ -1,0 +1,33 @@
+<nav class="ml-d" [class.ml-d--fechado]="!aberto">
+  <header class="ml-d__head">
+    <div class="ml-d__brand">
+      <!-- Cabeçalho simples -->
+      <strong class="ml-d__title" *ngIf="aberto">Menu</strong>
+      <span class="ml-d__title" *ngIf="!aberto" aria-hidden="true">≡</span>
+    </div>
+
+    <button
+      type="button"
+      class="ml-d__toggle"
+      (click)="onToggle()"
+      [attr.aria-label]="aberto ? 'Recolher menu' : 'Abrir menu'"
+      [title]="aberto ? 'Recolher menu' : 'Abrir menu'"
+    >
+      <span *ngIf="aberto">⟨</span>
+      <span *ngIf="!aberto">☰</span>
+    </button>
+  </header>
+
+  <div class="ml-d__body">
+    <a
+      *ngFor="let l of links; trackBy: trackByTo"
+      class="ml-d__link"
+      [routerLink]="l.to"
+      routerLinkActive="is-active"
+      [title]="!aberto ? l.label : null"
+    >
+      <span class="ml-d__ico">{{ l.icon }}</span>
+      <span class="ml-d__lbl" *ngIf="aberto">{{ l.label }}</span>
+    </a>
+  </div>
+</nav>

@@ -1,0 +1,56 @@
+<section class="home">
+  <!-- HEADER -->
+  <header class="home__header">
+    <h1 class="home__title">Bem-vindo 👋</h1>
+    <p class="home__subtitle">
+      O que você deseja gerenciar agora?
+    </p>
+  </header>
+
+  <!-- ACTIONS -->
+  <div class="home__actions">
+    <button class="home-card" (click)="goAppointments()">
+      <div class="home-card__icon">📅</div>
+      <div class="home-card__content">
+        <strong>Agendamentos</strong>
+        <span>Veja e gerencie seus clientes</span>
+      </div>
+    </button>
+
+    <button class="home-card" (click)="goProducts()">
+      <div class="home-card__icon">✂️</div>
+      <div class="home-card__content">
+        <strong>Serviços</strong>
+        <span>Cortes, barba e preços</span>
+      </div>
+    </button>
+
+    <button class="home-card" (click)="goWorkingHours()">
+      <div class="home-card__icon">⏰</div>
+      <div class="home-card__content">
+        <strong>Horários</strong>
+        <span>Dias e horários de trabalho</span>
+      </div>
+    </button>
+  </div>
+
+  <!-- AFFILIATE LINK (NÃO É MENU) -->
+  <div class="home-affiliate">
+    <div class="home-affiliate__icon">🔗</div>
+
+    <div class="home-affiliate__content">
+      <strong>Link de agendamento</strong>
+      <span>
+        Compartilhe este link com seus clientes
+      </span>
+    </div>
+
+    <button
+      type="button"
+      class="home-affiliate__btn"
+      (click)="copyAffiliateLink()"
+    >
+      Copiar
+    </button>
+  </div>
+</section>

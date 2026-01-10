@@ -1,0 +1,35 @@
+<div class="cl-shell" [class.cl-shell--drawer-open]="mobileAberto">
+  <app-menu-lateral-desktop
+    *ngIf="!mobile"
+    [aberto]="desktopAberto"
+    (toggle)="desktopAberto = !desktopAberto">
+  </app-menu-lateral-desktop>
+
+  <div class="cl-main">
+    <header class="cl-topbar">
+      <button
+        *ngIf="mobile"
+        class="cl-topbar__menu-btn"
+        (click)="toggleMenu()">
+        ☰
+      </button>
+
+      <div class="cl-topbar__brand">
+        <h1 class="cl-topbar__name">agendamentos online</h1>
+        <p class="cl-topbar__desc">
+          melhor lugar pra gerenciar seus agendamentos
+        </p>
+      </div>
+    </header>
+
+    <app-menu-lateral-mobile
+      *ngIf="mobile"
+      [aberto]="mobileAberto"
+      (close)="closeMobile()">
+    </app-menu-lateral-mobile>
+
+    <main class="cl-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

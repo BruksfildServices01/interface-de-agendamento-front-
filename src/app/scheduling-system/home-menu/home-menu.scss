@@ -1,0 +1,172 @@
+.home {
+  min-height: 100vh;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  background:
+    radial-gradient(800px 400px at 10% 10%, rgba(59,130,246,.12), transparent 60%),
+    radial-gradient(700px 350px at 90% 20%, rgba(168,85,247,.10), transparent 55%),
+    radial-gradient(600px 400px at 50% 90%, rgba(34,197,94,.08), transparent 55%);
+}
+
+/* =========================
+   Header
+========================= */
+.home__header {
+  text-align: center;
+}
+
+.home__title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.home__subtitle {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* =========================
+   Actions
+========================= */
+.home__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+/* =========================
+   Card (menu principal)
+========================= */
+.home-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border-radius: 1rem;
+
+  background: rgba(2, 6, 23, 0.9);
+  border: 1px solid rgba(148,163,184,.18);
+
+  color: rgba(226,232,240,.96);
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 120ms ease,
+    box-shadow 150ms ease,
+    border-color 150ms ease;
+
+  &:hover {
+    border-color: rgba(59,130,246,.45);
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.home-card__icon {
+  font-size: 1.6rem;
+  width: 40px;
+  text-align: center;
+}
+
+.home-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+
+  strong {
+    font-size: 0.95rem;
+  }
+
+  span {
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+}
+
+/* =========================
+   Affiliate (visual informativo)
+========================= */
+.home-affiliate {
+  margin-top: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.85rem;
+
+  background: rgba(2, 6, 23, 0.55);
+  border: 1px dashed rgba(148,163,184,.28);
+}
+
+.home-affiliate__icon {
+  font-size: 1.25rem;
+  opacity: 0.85;
+}
+
+.home-affiliate__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+
+  strong {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  span {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+}
+
+.home-affiliate__btn {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.75rem;
+
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgba(148,163,184,.4);
+
+  color: rgba(226,232,240,.9);
+  cursor: pointer;
+
+  transition: background 120ms ease, border-color 120ms ease;
+
+  &:hover {
+    background: rgba(148,163,184,.12);
+    border-color: rgba(148,163,184,.7);
+  }
+}
+
+/* =========================
+   Desktop
+========================= */
+@media (min-width: 900px) {
+  .home {
+    align-items: center;
+  }
+
+  .home__actions {
+    width: 420px;
+  }
+
+  .home-affiliate {
+    width: 420px;
+  }
+}

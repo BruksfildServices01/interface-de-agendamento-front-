@@ -1,0 +1,162 @@
+<section class="public-booking">
+
+  <!-- HEADER -->
+  <header class="public-booking__header">
+    <h1 class="public-booking__title">Agendamento</h1>
+    <p class="public-booking__subtitle">
+      Escolha serviço, horário e confirme
+    </p>
+  </header>
+
+  <!-- STEP 1 — SERVIÇO -->
+  <div
+    class="public-card"
+    [class.public-card--selected]="selectedService()"
+    (click)="serviceModalOpen.set(true)"
+  >
+    <!-- NÃO SELECIONADO -->
+    <ng-container *ngIf="!selectedService()">
+      <div class="public-card__row">
+        <div class="public-card__content">
+          <strong>Serviço</strong>
+          <span>Nenhum serviço selecionado</span>
+        </div>
+        <div class="public-card__icon">✂️</div>
+      </div>
+    </ng-container>
+
+    <!-- SELECIONADO -->
+    <ng-container *ngIf="selectedService() as service">
+      <div class="public-card__badge">✓ Serviço selecionado</div>
+
+      <div class="public-card__main">
+        <strong class="public-card__title">{{ service.name }}</strong>
+        <div class="public-card__details">
+          <span>{{ service.durationMin }} min</span>
+          <span>•</span>
+          <span>R$ {{ service.price | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <div class="public-card__footer">
+        <span class="public-card__change">Trocar serviço</span>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- STEP 2 — HORÁRIO -->
+  <div
+    class="public-card"
+    [class.public-card--selected]="selectedDate() && selectedTime()"
+    [class.disabled]="!selectedService()"
+    (click)="selectedService() && timeModalOpen.set(true)"
+  >
+    <!-- NÃO SELECIONADO -->
+    <ng-container *ngIf="!selectedDate() || !selectedTime()">
+      <div class="public-card__row">
+        <div class="public-card__content">
+          <strong>Horário</strong>
+          <span>Nenhum horário selecionado</span>
+        </div>
+        <div class="public-card__icon">⏰</div>
+      </div>
+    </ng-container>
+
+    <!-- SELECIONADO -->
+    <ng-container *ngIf="selectedDate() && selectedTime()">
+      <div class="public-card__badge">✓ Horário selecionado</div>
+
+      <div class="public-card__main">
+        <strong class="public-card__title">{{ selectedDate() }}</strong>
+        <div class="public-card__details">
+          <span>{{ selectedTime() }}</span>
+        </div>
+      </div>
+
+      <div class="public-card__footer">
+        <span class="public-card__change">Trocar horário</span>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- DADOS DO CLIENTE -->
+  <div class="public-form">
+    <input class="input" placeholder="Nome"
+      [ngModel]="clientName()" (ngModelChange)="clientName.set($event)" />
+
+    <input class="input" placeholder="Telefone"
+      [ngModel]="clientPhone()" (ngModelChange)="clientPhone.set($event)" />
+
+    <input class="input" placeholder="Email (opcional)"
+      [ngModel]="clientEmail()" (ngModelChange)="clientEmail.set($event)" />
+
+    <textarea class="input" rows="3" placeholder="Observações"
+      [ngModel]="notes()" (ngModelChange)="notes.set($event)"></textarea>
+  </div>
+
+  <!-- CTA -->
+  <div class="public-cta">
+    <button
+      type="button"
+      class="public-cta__btn"
+      [disabled]="!canSubmit()"
+      (click)="confirm()"
+    >
+      Confirmar agendamento
+    </button>
+  </div>
+
+</section>
+
+<!-- OVERLAY GERAL -->
+<div class="tm-overlay"
+  *ngIf="serviceModalOpen() || timeModalOpen() || success()">
+</div>
+
+<!-- MODAL — SERVIÇOS -->
+<app-service-picker-modal
+  *ngIf="serviceModalOpen()"
+  [slug]="slug()"
+  (select)="onServiceSelected($event)"
+  (close)="serviceModalOpen.set(false)"
+/>
+
+<!-- MODAL — HORÁRIOS -->
+<app-time-picker-modal
+  *ngIf="timeModalOpen() && selectedService()"
+  [slug]="slug()"
+  [serviceId]="selectedService()!.id"
+  (select)="onTimeSelected($event.date, $event.time)"
+  (close)="timeModalOpen.set(false)"
+/>
+
+<!-- MODAL — CONFIRMAÇÃO -->
+<div class="success-modal" *ngIf="success()">
+  <div class="success-modal__card">
+
+    <div class="success-modal__icon">✅</div>
+
+    <h2 class="success-modal__title">
+      Agendamento confirmado!
+    </h2>
+
+    <p class="success-modal__subtitle">
+      Seu horário foi reservado com sucesso.
+    </p>
+
+    <div class="success-modal__summary" *ngIf="createdAppointment() as ap">
+      <div><strong>Serviço:</strong> {{ ap.serviceName }}</div>
+      <div><strong>Data:</strong> {{ ap.date }}</div>
+      <div><strong>Horário:</strong> {{ ap.time }}</div>
+    </div>
+
+    <button
+      type="button"
+      class="success-modal__btn"
+      (click)="closeSuccess()"
+    >
+      Fechar
+    </button>
+
+  </div>
+</div>

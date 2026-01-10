@@ -1,0 +1,116 @@
+<section class="tm-modal">
+
+  <!-- HEADER -->
+  <header class="tm-modal__header">
+    <button
+      type="button"
+      class="tm-modal__close"
+      (click)="close.emit()"
+    >
+      ←
+    </button>
+
+    <div class="tm-modal__title">
+      <strong>Escolher serviço</strong>
+      <span>Selecione o serviço desejado</span>
+    </div>
+  </header>
+
+  <!-- SEARCH -->
+  <div class="tm-modal__search">
+    <input
+      class="input"
+      placeholder="Buscar por nome do serviço..."
+      [(ngModel)]="query"
+    />
+  </div>
+
+  <!-- FILTER TOGGLE -->
+  <button
+    type="button"
+    class="filter-toggle"
+    (click)="filtersOpen = !filtersOpen"
+  >
+    <span>Filtros avançados</span>
+    <span>{{ filtersOpen ? '▲' : '▼' }}</span>
+  </button>
+
+  <!-- FILTERS -->
+  <div class="filters" *ngIf="filtersOpen">
+
+    <div class="filters__row">
+      <input
+        class="input"
+        type="number"
+        placeholder="Preço mín."
+        [(ngModel)]="minPrice"
+      />
+      <input
+        class="input"
+        type="number"
+        placeholder="Preço máx."
+        [(ngModel)]="maxPrice"
+      />
+    </div>
+
+    <div class="filters__row">
+      <input
+        class="input"
+        type="number"
+        placeholder="Duração mín. (min)"
+        [(ngModel)]="minDuration"
+      />
+      <input
+        class="input"
+        type="number"
+        placeholder="Duração máx. (min)"
+        [(ngModel)]="maxDuration"
+      />
+    </div>
+
+    <!-- APPLY -->
+    <button
+      type="button"
+      class="filters__apply"
+      (click)="applyFilters()"
+    >
+      Aplicar filtros
+    </button>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="tm-modal__content">
+
+    <p class="tm-modal__empty" *ngIf="loading()">
+      Carregando serviços...
+    </p>
+
+    <button
+      class="service-card"
+      *ngFor="let s of filteredServices()"
+      (click)="pick(s)"
+    >
+      <div class="service-card__content">
+        <strong>{{ s.name }}</strong>
+        <span *ngIf="s.description">
+          {{ s.description }}
+        </span>
+      </div>
+
+      <div class="service-card__meta">
+        <span>{{ s.durationMin }} min</span>
+        <span>R$ {{ s.price | number:'1.2-2' }}</span>
+      </div>
+    </button>
+
+    <p
+      class="tm-modal__empty"
+      *ngIf="!loading() && !filteredServices().length"
+    >
+      Nenhum serviço encontrado com esses filtros.
+    </p>
+
+  </div>
+
+</section>

@@ -1,0 +1,73 @@
+<section class="auth">
+  <div class="auth__card">
+    <header class="auth__header">
+      <h1 class="auth__title">Criar conta</h1>
+      <p class="auth__subtitle">Informe seus dados para começar.</p>
+    </header>
+
+    <div class="auth__toggle">
+      <button
+        type="button"
+        class="seg"
+        [class.seg--active]="accountType() === 'ORGANIZADOR'"
+        (click)="accountType.set('ORGANIZADOR')"
+      >
+        Organizador
+      </button>
+
+      <button
+        type="button"
+        class="seg"
+        [class.seg--active]="accountType() === 'VIEWER'"
+        (click)="accountType.set('VIEWER')"
+      >
+        Espectador
+      </button>
+    </div>
+
+    <form class="auth__form" (ngSubmit)="submit()">
+      <label class="field">
+        <span class="field__label">Nome</span>
+        <input
+          name="name"
+          [ngModel]="name()"
+          (ngModelChange)="name.set($event)"
+          placeholder="Seu nome"
+        />
+      </label>
+
+      <label class="field">
+        <span class="field__label">Email</span>
+        <input
+          name="email"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
+          placeholder="seuemail@dominio.com"
+        />
+      </label>
+
+      <label class="field">
+        <span class="field__label">Senha</span>
+        <input
+          type="password"
+          name="password"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          placeholder="••••••"
+        />
+      </label>
+
+      <div *ngIf="errorMessage()" class="auth__error">
+        {{ errorMessage() }}
+      </div>
+
+      <button class="btn btn-primary" type="submit" [disabled]="!canSubmit()">
+        {{ loading() ? 'Criando…' : 'Criar conta' }}
+      </button>
+
+      <button class="btn btn-ghost" type="button" (click)="goToLogin()">
+        Já tenho conta
+      </button>
+    </form>
+  </div>
+</section>

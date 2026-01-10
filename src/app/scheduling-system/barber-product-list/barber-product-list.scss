@@ -1,0 +1,143 @@
+.bp {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0; /* ESSENCIAL p/ scroll interno */
+}
+
+/* =========================
+   Header fixo
+========================= */
+.bp__header {
+  flex-shrink: 0;
+
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: var(--space-4);
+  background: rgba(2, 6, 23, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.bp__title {
+  font-size: var(--font-size-xl);
+}
+
+.bp__add {
+  padding: 6px 14px;
+  font-size: var(--font-size-sm);
+}
+
+/* =========================
+   Filtros fixos
+========================= */
+.bp__filters {
+  flex-shrink: 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+
+  padding: var(--space-3);
+  background: var(--bg-body);
+  border-bottom: 1px solid var(--color-border-subtle);
+
+  input {
+    grid-column: span 2;
+  }
+
+  input,
+  select {
+    width: 100%;
+  }
+}
+
+/* =========================
+   LISTA (ÚNICO SCROLL)
+========================= */
+.bp__list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =========================
+   Card do serviço
+========================= */
+.bp-card {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+
+  box-shadow: var(--shadow-soft);
+}
+
+.bp-card__main {
+  flex: 1;
+}
+
+.bp-card__name {
+  margin-bottom: 2px;
+}
+
+.bp-card__meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-soft);
+}
+
+.bp-card__desc {
+  margin-top: 4px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* =========================
+   Ações
+========================= */
+.bp-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bp-card__edit {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.bp-card__delete {
+  background: transparent;
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* =========================
+   Estados
+========================= */
+.bp__state {
+  padding: var(--space-4);
+  text-align: center;
+  color: var(--color-text-soft);
+}
+
+.bp__state--error {
+  color: var(--color-danger);
+}

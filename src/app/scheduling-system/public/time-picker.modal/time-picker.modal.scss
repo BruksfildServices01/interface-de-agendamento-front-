@@ -1,0 +1,156 @@
+/* ==================================================
+   TIME PICKER MODAL — MOBILE FIRST
+================================================== */
+
+.tm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--bg-body);
+  color: var(--color-text-main);
+}
+
+/* =========================
+   HEADER
+========================= */
+.tm-modal__header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  padding: var(--space-4);
+
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.tm-modal__close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-main);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.tm-modal__title {
+  display: flex;
+  flex-direction: column;
+
+  strong {
+    font-size: var(--font-size-md);
+  }
+
+  span {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+}
+
+/* =========================
+   DATE
+========================= */
+.tm-modal__date {
+  padding: var(--space-4);
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.tm-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+/* =========================
+   TIME FILTERS
+========================= */
+.time-filters {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  overflow-x: auto;
+}
+
+.time-filter {
+  background: transparent;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+
+  font-size: var(--font-size-sm);
+  color: var(--color-text-soft);
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+.time-filter.active {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.time-filter.reset {
+  color: var(--color-text-muted);
+}
+
+/* =========================
+   CONTENT
+========================= */
+.tm-modal__content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  padding: var(--space-4);
+}
+
+/* =========================
+   SLOTS GRID
+========================= */
+.slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  gap: var(--space-3);
+}
+
+/* =========================
+   SLOT
+========================= */
+.slot-card {
+  padding: var(--space-3) 0;
+
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-main);
+
+  cursor: pointer;
+  text-align: center;
+}
+
+.slot-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-light);
+}
+
+/* =========================
+   EMPTY
+========================= */
+.tm-modal__empty {
+  margin-top: var(--space-5);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
