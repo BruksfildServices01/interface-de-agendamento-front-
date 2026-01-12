@@ -1,11 +1,15 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "dist/corteon-front/**/*",
+      "src": "dist/corteon-front/browser/**/*",
       "use": "@vercel/static"
     }
   ],
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
