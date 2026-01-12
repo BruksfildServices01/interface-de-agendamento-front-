@@ -2,50 +2,46 @@
   <div class="auth__card">
     <header class="auth__header">
       <h1 class="auth__title">Criar conta</h1>
-      <p class="auth__subtitle">Informe seus dados para começar.</p>
+      <p class="auth__subtitle">Crie sua barbearia e comece a agendar.</p>
     </header>
 
-    <div class="auth__toggle">
-      <button
-        type="button"
-        class="seg"
-        [class.seg--active]="accountType() === 'ORGANIZADOR'"
-        (click)="accountType.set('ORGANIZADOR')"
-      >
-        Organizador
-      </button>
-
-      <button
-        type="button"
-        class="seg"
-        [class.seg--active]="accountType() === 'VIEWER'"
-        (click)="accountType.set('VIEWER')"
-      >
-        Espectador
-      </button>
-    </div>
-
     <form class="auth__form" (ngSubmit)="submit()">
+
+      <!-- NOME DA BARBEARIA -->
       <label class="field">
-        <span class="field__label">Nome</span>
+        <span class="field__label">Nome da barbearia</span>
+        <input
+          name="barbershopName"
+          [ngModel]="barbershopName()"
+          (ngModelChange)="onBarbershopNameChange($event)"
+          placeholder="Barbearia do Lucas"
+        />
+      </label>
+
+      <!-- NOME DO BARBEIRO -->
+      <label class="field">
+        <span class="field__label">Seu nome</span>
         <input
           name="name"
           [ngModel]="name()"
           (ngModelChange)="name.set($event)"
-          placeholder="Seu nome"
+          placeholder="Lucas"
         />
       </label>
 
+      <!-- EMAIL -->
       <label class="field">
         <span class="field__label">Email</span>
         <input
           name="email"
+          type="email"
           [ngModel]="email()"
           (ngModelChange)="email.set($event)"
-          placeholder="seuemail@dominio.com"
+          placeholder="lucas@email.com"
         />
       </label>
 
+      <!-- SENHA -->
       <label class="field">
         <span class="field__label">Senha</span>
         <input
@@ -57,10 +53,12 @@
         />
       </label>
 
+      <!-- ERRO -->
       <div *ngIf="errorMessage()" class="auth__error">
         {{ errorMessage() }}
       </div>
 
+      <!-- SUBMIT -->
       <button class="btn btn-primary" type="submit" [disabled]="!canSubmit()">
         {{ loading() ? 'Criando…' : 'Criar conta' }}
       </button>

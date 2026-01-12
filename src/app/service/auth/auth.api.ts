@@ -1,45 +1,44 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 
-// Tipos de DTOs para Login e Registro
+// =======================
+// DTOs
+// =======================
+
 export type RegisterRequestDTO = {
+  barbershop_name: string;
+  barbershop_slug: string;
   name: string;
   email: string;
   password: string;
 };
 
-export type LoginResponseDTO = { 
-  token: string; 
-  // Adicionar qualquer outra informação relevante do login, por exemplo:
-  // user: User;
+export type AuthResponseDTO = {
+  token: string;
 };
 
 @Injectable({ providedIn: 'root' })
 export class AuthApi {
   private http = inject(HttpClient);
-  private base = `${environment.apiUrl}/auth`;  // Base URL para autenticação
+  private baseUrl = `${environment.apiUrl}/auth`;
 
-  // Método de login com email e senha
+  // =======================
+  // LOGIN
+  // =======================
   login(email: string, password: string) {
-    return this.http.post<LoginResponseDTO>(`${this.base}/login`, {
+    return this.http.post<AuthResponseDTO>(`${this.baseUrl}/login`, {
       email,
       password,
     });
   }
 
-  // Método para registrar um organizador
-  registerOrganizador(dto: RegisterRequestDTO) {
-    return this.http.post<LoginResponseDTO>(
-      `${this.base}/register/organizador`,
-      dto
-    );
-  }
-
-  
-  registerViewer(dto: RegisterRequestDTO) {
-    return this.http.post<LoginResponseDTO>(
-      `${this.base}/register/viewer`,
+  // =======================
+  // REGISTER (BARBEIRO / OWNER)
+  // =======================
+  register(dto: RegisterRequestDTO) {
+    return this.http.post<AuthResponseDTO>(
+      `${this.baseUrl}/register`,
       dto
     );
   }

@@ -78,6 +78,7 @@ export class LoginPage {
   // REGISTER
   // =========================
   goToRegister(): void {
-    this.router.navigateByUrl('/register');
+    this.router.navigateByUrl('/auth/register');
   }
+
 }

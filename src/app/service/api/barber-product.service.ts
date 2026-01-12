@@ -9,7 +9,7 @@ import {
   CreateBarberProductDTO,
 } from '../../model/barber-product.model';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
