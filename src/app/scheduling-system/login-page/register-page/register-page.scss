@@ -45,6 +45,22 @@
 }
 
 /* =========================
+   Hint / Preview de Link
+========================= */
+.auth__hint {
+  margin: -0.2rem 0 0.4rem;
+  font-size: 0.82rem;
+  opacity: 0.78;
+  color: rgba(226, 232, 240, 0.85);
+
+  strong {
+    font-weight: 600;
+    color: rgba(59, 130, 246, 0.9);
+  }
+}
+
+
+/* =========================
    Toggle (Organizador/Viewer)
 ========================= */
 

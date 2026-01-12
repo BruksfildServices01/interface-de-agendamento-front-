@@ -12,9 +12,8 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    // 🔥 IMPORTANTE
-    this.router.navigateByUrl('/login', { replaceUrl: true });
+    // 🔥 sem token → login
+    this.router.navigateByUrl('/auth/login', { replaceUrl: true });
     return false;
   }
 }
-

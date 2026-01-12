@@ -1,29 +1,49 @@
 <section class="auth">
   <div class="auth__card">
     <header class="auth__header">
-      <h1 class="auth__title">Entrar</h1>
-      <p class="auth__subtitle">Use seu email e senha para acessar.</p>
+      <h1 class="auth__title">Entrar no CorteOn</h1>
+      <p class="auth__subtitle">
+        A plataforma simples e profissional para gerenciar sua agenda de barbearia.
+      </p>
     </header>
+
+    <!-- 🔹 Destaques da plataforma -->
+    <div class="auth__features">
+      <div class="feature">
+        <span class="feature__dot"></span>
+        <span>Agendamentos online em tempo real</span>
+      </div>
+      <div class="feature">
+        <span class="feature__dot"></span>
+        <span>Link público para seus clientes</span>
+      </div>
+      <div class="feature">
+        <span class="feature__dot"></span>
+        <span>Controle total de horários e serviços</span>
+      </div>
+    </div>
 
     <form class="auth__form" (ngSubmit)="login()">
       <label class="field">
         <span class="field__label">Email</span>
-        <input 
-          name="email" 
-          [ngModel]="email()" 
-          (ngModelChange)="email.set($event)" 
+        <input
+          type="email"
+          name="email"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
           placeholder="seuemail@dominio.com"
-          type="email" />
+        />
       </label>
 
       <label class="field">
         <span class="field__label">Senha</span>
-        <input 
-          type="password" 
-          name="password" 
-          [ngModel]="password()" 
-          (ngModelChange)="password.set($event)" 
-          placeholder="••••••" />
+        <input
+          type="password"
+          name="password"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          placeholder="••••••"
+        />
       </label>
 
       <div *ngIf="errorMessage()" class="auth__error">
@@ -35,7 +55,7 @@
       </button>
 
       <button class="btn btn-ghost" type="button" (click)="goToRegister()">
-        Não tem uma conta? Crie aqui
+        Criar minha barbearia no CorteOn
       </button>
     </form>
   </div>

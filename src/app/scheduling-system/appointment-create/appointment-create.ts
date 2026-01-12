@@ -14,9 +14,9 @@ import { WorkingHoursService } from '../../service/api/working-hours.service';
 })
 export class AppointmentCreate implements OnInit {
 
-  // ======================================================
+  // =========================
   // STATE
-  // ======================================================
+  // =========================
 
   days = signal<WorkingDay[]>([]);
   loading = signal(false);
@@ -26,25 +26,38 @@ export class AppointmentCreate implements OnInit {
 
   constructor(private service: WorkingHoursService) {}
 
-  // ======================================================
+  // =========================
   // LIFECYCLE
-  // ======================================================
+  // =========================
 
   ngOnInit(): void {
     this.load();
   }
 
-  // ======================================================
-  // BACKEND
-  // ======================================================
+  // =========================
+  // LOAD / BACKEND
+  // =========================
 
   load(): void {
     this.loading.set(true);
 
     this.service.get().subscribe({
       next: (data) => {
-        this.days.set(data ?? []);
-        this.loading.set(false);
+        // ✅ Se já existem horários no backend
+        if (data && data.length > 0) {
+          this.days.set(data);
+          this.loading.set(false);
+          return;
+        }
+
+        // 🧠 Caso contrário, cria padrão
+        const defaults = this.createDefaultDays();
+        this.days.set(defaults);
+
+        // 💾 Salva automaticamente no backend
+        this.service.update(defaults).subscribe({
+          complete: () => this.loading.set(false),
+        });
       },
       error: () => {
         this.loading.set(false);
@@ -56,19 +69,43 @@ export class AppointmentCreate implements OnInit {
     this.service.update(this.days()).subscribe();
   }
 
-  // ======================================================
+  // =========================
+  // DEFAULT DAYS
+  // =========================
+
+  private createDefaultDays(): WorkingDay[] {
+    return [0, 1, 2, 3, 4, 5, 6].map((weekday) =>
+      this.defaultDay(weekday)
+    );
+  }
+
+  private defaultDay(weekday: number): WorkingDay {
+    const isWeekday = weekday >= 1 && weekday <= 5;
+
+    return {
+      weekday,
+      active: isWeekday,
+      start_time: isWeekday ? '09:00' : '',
+      end_time: isWeekday ? '17:00' : '',
+      lunch_start: undefined,
+      lunch_end: undefined,
+    };
+  }
+
+  // =========================
   // HELPERS
-  // ======================================================
+  // =========================
 
   weekdayLabel(day: number): string {
     return ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][day];
   }
 
-  // ======================================================
+  // =========================
   // ACTIONS
-  // ======================================================
+  // =========================
 
   openDay(day: WorkingDay): void {
+    // clone para não editar direto a lista
     this.editingDay.set({ ...day });
     this.modalOpen.set(true);
   }
@@ -84,6 +121,8 @@ export class AppointmentCreate implements OnInit {
 
     // 🧠 limpeza automática
     if (!updated.active) {
+      updated.start_time = '';
+      updated.end_time = '';
       updated.lunch_start = undefined;
       updated.lunch_end = undefined;
     }
@@ -94,7 +133,7 @@ export class AppointmentCreate implements OnInit {
       )
     );
 
-    // 💾 salva no backend automaticamente
+    // 💾 salva no backend
     this.saveAll();
 
     this.closeModal();

@@ -19,10 +19,10 @@ export class RegisterPage {
   private router = inject(Router);
 
   // =========================
-  // STATE
+  // FORM STATE
   // =========================
   barbershopName = signal('');
-  barbershopSlug = signal(''); // 🔒 invisível para o usuário
+  barbershopSlug = signal('');
 
   name = signal('');
   email = signal('');
@@ -34,7 +34,12 @@ export class RegisterPage {
   // =========================
   // HELPERS
   // =========================
-  private slugify(value: string): string {
+
+  /**
+   * Gera slug automaticamente
+   * "Barbearia do Lucas" -> "barbearia-do-lucas"
+   */
+  private generateSlug(value: string): string {
     return value
       .toLowerCase()
       .normalize('NFD')
@@ -43,50 +48,54 @@ export class RegisterPage {
       .replace(/(^-|-$)/g, '');
   }
 
-  onBarbershopNameChange(value: string) {
+  onBarbershopNameChange(value: string): void {
     this.barbershopName.set(value);
-    this.barbershopSlug.set(this.slugify(value));
+    this.barbershopSlug.set(this.generateSlug(value));
   }
 
   // =========================
   // VALIDATION
   // =========================
-  canSubmit = computed(() =>
-    !this.loading() &&
-    this.barbershopName().trim().length >= 3 &&
-    this.barbershopSlug().trim().length >= 3 &&
-    this.name().trim().length >= 2 &&
-    this.email().trim().length >= 5 &&
-    this.password().trim().length >= 6
-  );
+  canSubmit = computed(() => {
+    return (
+      !this.loading() &&
+      this.barbershopName().trim().length >= 3 &&
+      this.name().trim().length >= 2 &&
+      this.email().trim().length >= 5 &&
+      this.password().trim().length >= 6
+    );
+  });
 
   // =========================
-  // SUBMIT
+  // REGISTER
   // =========================
-  submit() {
-    if (!this.canSubmit()) return;
+  submit(): void {
+  if (!this.canSubmit()) return;
 
-    this.loading.set(true);
-    this.errorMessage.set(null);
+  // 🔥 LIMPA QUALQUER TOKEN ANTIGO
+  this.tokenStorage.clear();
 
-    const payload = {
+  this.loading.set(true);
+  this.errorMessage.set(null);
+
+  this.authApi
+    .register({
       barbershop_name: this.barbershopName().trim(),
       barbershop_slug: this.barbershopSlug(),
       name: this.name().trim(),
       email: this.email().trim(),
       password: this.password().trim(),
-    };
-
-    this.authApi.register(payload).subscribe({
+    })
+    .subscribe({
       next: (res) => {
         this.tokenStorage.set(res.token);
         this.router.navigateByUrl('/home', { replaceUrl: true });
       },
-      error: (err) => {
+      error: (err: any) => {
         const msg =
           err?.error?.message ||
-          err?.error?.error ||
-          'Erro ao criar conta.';
+          err?.message ||
+          'Não foi possível criar sua conta.';
         this.errorMessage.set(msg);
         this.loading.set(false);
       },
@@ -94,9 +103,13 @@ export class RegisterPage {
         this.loading.set(false);
       },
     });
-  }
+}
 
-  goToLogin() {
+
+  // =========================
+  // NAVIGATION
+  // =========================
+  goToLogin(): void {
     this.router.navigateByUrl('/auth/login');
   }
 }

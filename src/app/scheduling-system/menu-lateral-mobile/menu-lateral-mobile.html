@@ -26,6 +26,7 @@
   </header>
 
   <div class="ml-m__body">
+    <!-- Links de navegação -->
     <a
       *ngFor="let l of links"
       class="ml-m__link"
@@ -36,5 +37,15 @@
       <span class="ml-m__ico">{{ l.icon }}</span>
       <span class="ml-m__lbl">{{ l.label }}</span>
     </a>
+
+    <!-- Botão de logout no menu -->
+    <button
+      class="ml-m__link ml-m__link--logout"
+      (click)="logout()"
+      aria-label="Sair"
+    >
+      <span class="ml-m__ico">🚪</span>
+      <span class="ml-m__lbl">Sair</span>
+    </button>
   </div>
 </nav>

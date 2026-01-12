@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { BarbershopService } from '../../service/api/barbershop.service';
 
 @Component({
   selector: 'app-home-menu',
@@ -10,11 +11,18 @@ import { Router } from '@angular/router';
   styleUrl: './home-menu.scss',
 })
 export class HomeMenu {
-  constructor(private router: Router) {}
+  private router = inject(Router);
+  private barbershopService = inject(BarbershopService);
 
-  // =========================
-  // NAVIGATION
-  // =========================
+  slug = '';
+
+  ngOnInit(): void {
+    this.barbershopService.getMe().subscribe({
+      next: (b) => {
+        this.slug = b.slug;
+      },
+    });
+  }
 
   goAppointments(): void {
     this.router.navigateByUrl('/appointments/list');
@@ -28,14 +36,8 @@ export class HomeMenu {
     this.router.navigateByUrl('/appointments/create');
   }
 
-  // =========================
-  // AFFILIATE LINK
-  // =========================
-
   copyAffiliateLink(): void {
-    // depois você pode pegar isso do backend
-    const link = `${window.location.origin}/public/barbearia-do-lucas`;
-
+    const link = `${window.location.origin}/public/${this.slug}`;
     navigator.clipboard.writeText(link);
     alert('Link copiado para a área de transferência');
   }

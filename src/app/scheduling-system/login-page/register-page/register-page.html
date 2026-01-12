@@ -1,31 +1,45 @@
 <section class="auth">
   <div class="auth__card">
+    <!-- HEADER -->
     <header class="auth__header">
       <h1 class="auth__title">Criar conta</h1>
-      <p class="auth__subtitle">Crie sua barbearia e comece a agendar.</p>
+      <p class="auth__subtitle">
+        Crie sua barbearia no <strong>CorteOn</strong>.
+      </p>
     </header>
 
+    <!-- FORM -->
     <form class="auth__form" (ngSubmit)="submit()">
 
       <!-- NOME DA BARBEARIA -->
       <label class="field">
         <span class="field__label">Nome da barbearia</span>
         <input
+          type="text"
           name="barbershopName"
           [ngModel]="barbershopName()"
           (ngModelChange)="onBarbershopNameChange($event)"
           placeholder="Barbearia do Lucas"
+          autocomplete="organization"
         />
       </label>
 
-      <!-- NOME DO BARBEIRO -->
+      <!-- PREVIEW DO LINK (DISCRETO) -->
+      <div *ngIf="barbershopSlug()" class="auth__hint">
+        Seu link público será:
+        <strong>corteon.app/{{ barbershopSlug() }}</strong>
+      </div>
+
+      <!-- NOME DO USUÁRIO -->
       <label class="field">
         <span class="field__label">Seu nome</span>
         <input
+          type="text"
           name="name"
           [ngModel]="name()"
           (ngModelChange)="name.set($event)"
           placeholder="Lucas"
+          autocomplete="name"
         />
       </label>
 
@@ -33,11 +47,12 @@
       <label class="field">
         <span class="field__label">Email</span>
         <input
-          name="email"
           type="email"
+          name="email"
           [ngModel]="email()"
           (ngModelChange)="email.set($event)"
           placeholder="lucas@email.com"
+          autocomplete="email"
         />
       </label>
 
@@ -50,6 +65,7 @@
           [ngModel]="password()"
           (ngModelChange)="password.set($event)"
           placeholder="••••••"
+          autocomplete="new-password"
         />
       </label>
 
@@ -59,11 +75,20 @@
       </div>
 
       <!-- SUBMIT -->
-      <button class="btn btn-primary" type="submit" [disabled]="!canSubmit()">
-        {{ loading() ? 'Criando…' : 'Criar conta' }}
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!canSubmit()"
+      >
+        {{ loading() ? 'Criando…' : 'Criar minha barbearia' }}
       </button>
 
-      <button class="btn btn-ghost" type="button" (click)="goToLogin()">
+      <!-- LOGIN -->
+      <button
+        class="btn btn-ghost"
+        type="button"
+        (click)="goToLogin()"
+      >
         Já tenho conta
       </button>
     </form>

@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "sistema-de-campeonato-front": {
+    "corteon-front": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -74,10 +74,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sistema-de-campeonato-front:build:production"
+              "buildTarget": "corteon-front:build:production"
             },
             "development": {
-              "buildTarget": "sistema-de-campeonato-front:build:development"
+              "buildTarget": "corteon-front:build:development"
             }
           },
           "defaultConfiguration": "development"

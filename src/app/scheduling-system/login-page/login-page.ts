@@ -44,6 +44,9 @@ export class LoginPage {
   login(): void {
     if (!this.canSubmit()) return;
 
+    // 🔥 LIMPA QUALQUER TOKEN ANTIGO (REGRA DE OURO)
+    this.tokenStorage.clear();
+
     this.loading.set(true);
     this.errorMessage.set(null);
 
@@ -51,10 +54,8 @@ export class LoginPage {
       .login(this.email().trim(), this.password().trim())
       .subscribe({
         next: (res) => {
-          // salva o token
           this.tokenStorage.set(res.token);
 
-          // navega para HOME (rota real do app)
           this.router.navigateByUrl('/home', {
             replaceUrl: true,
           });
@@ -73,6 +74,7 @@ export class LoginPage {
         },
       });
   }
+
 
   // =========================
   // REGISTER

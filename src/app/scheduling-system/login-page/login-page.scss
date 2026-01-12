@@ -113,6 +113,35 @@
   }
 }
 
+/* =========================
+   Destaques da Plataforma
+========================= */
+.auth__features {
+  margin: 1.25rem 0 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.9rem;
+  color: rgba(226, 232, 240, 0.88);
+}
+
+.feature__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,
+      rgba(59, 130, 246, 0.9),
+      rgba(168, 85, 247, 0.9));
+  flex-shrink: 0;
+}
+
+
 /* Botão primário */
 .btn-primary {
   background: rgba(59, 130, 246, 0.95);
