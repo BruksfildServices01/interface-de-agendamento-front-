@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/corteon-front/browser/**/*",
+      "src": "dist/corteon-front/**/*",
       "use": "@vercel/static"
     }
   ],
