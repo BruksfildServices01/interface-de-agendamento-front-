@@ -12,7 +12,7 @@ import { HomeMenu } from './scheduling-system/home-menu/home-menu';
 // =======================
 // PUBLIC
 // =======================
-import { PublicBooking } from './scheduling-system/public/public-booking/public-booking';
+import { PublicBooking } from './scheduling-system/public-cliente/public-booking/public-booking';
 
 // =======================
 // AUTH
