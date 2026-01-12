@@ -1,4 +1,10 @@
 {
+  "builds": [
+    {
+      "src": "dist/corteon-front/**/*",
+      "use": "@vercel/static"
+    }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
