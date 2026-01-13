@@ -30,43 +30,42 @@
 
   <!-- FILTERS -->
   <div class="time-filters">
-  <button
-    type="button"
-    class="time-filter"
-    [class.active]="period() === 'morning'"
-    (click)="setPeriod('morning')"
-  >
-    🌅 Manhã
-  </button>
+    <button
+      type="button"
+      class="time-filter"
+      [class.active]="period() === 'morning'"
+      (click)="setPeriod('morning')"
+    >
+      🌅 Manhã
+    </button>
 
-  <button
-    type="button"
-    class="time-filter"
-    [class.active]="period() === 'afternoon'"
-    (click)="setPeriod('afternoon')"
-  >
-    ☀️ Tarde
-  </button>
+    <button
+      type="button"
+      class="time-filter"
+      [class.active]="period() === 'afternoon'"
+      (click)="setPeriod('afternoon')"
+    >
+      ☀️ Tarde
+    </button>
 
-  <button
-    type="button"
-    class="time-filter"
-    [class.active]="period() === 'evening'"
-    (click)="setPeriod('evening')"
-  >
-    🌙 Noite
-  </button>
+    <button
+      type="button"
+      class="time-filter"
+      [class.active]="period() === 'evening'"
+      (click)="setPeriod('evening')"
+    >
+      🌙 Noite
+    </button>
 
-  <button
-    type="button"
-    class="time-filter reset"
-    *ngIf="period()"
-    (click)="setPeriod(null)"
-  >
-    Limpar
-  </button>
-</div>
-
+    <button
+      type="button"
+      class="time-filter reset"
+      *ngIf="period()"
+      (click)="setPeriod(null)"
+    >
+      Limpar
+    </button>
+  </div>
 
   <!-- CONTENT -->
   <div class="tm-modal__content">

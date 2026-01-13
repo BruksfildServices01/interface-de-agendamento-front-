@@ -60,6 +60,15 @@
           “{{ ap.notes }}”
         </div>
 
+        <!-- BOTÃO CANCELAR -->
+        <div *ngIf="ap.status === 'scheduled'" class="ap-card__actions">
+          <button
+            class="btn danger"
+            (click)="confirmCancel(ap.id)"
+          >
+            Cancelar
+          </button>
+        </div>
       </div>
     </article>
 
@@ -69,4 +78,5 @@
     </div>
 
   </div>
+
 </section>

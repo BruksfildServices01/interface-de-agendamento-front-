@@ -1,12 +1,7 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AppointmentService } from '../../service/api/appointment.service';
 import { Appointment } from '../../model/appointment.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-appointment-list',
@@ -32,7 +27,6 @@ export class AppointmentList implements OnInit {
 
   load(): void {
     this.loading = true;
-
     this.service.listByDate(this.selectedDate).subscribe({
       next: (data) => {
         this.appointments = data ?? [];
@@ -50,11 +44,6 @@ export class AppointmentList implements OnInit {
     this.load();
   }
 
-  /**
-   * ✅ AGENDA SAFE
-   * NÃO usa Date()
-   * NÃO aplica fuso
-   */
   formatTime(iso?: string): string {
     if (!iso) return '';
     return iso.slice(11, 16); // HH:mm direto do backend
@@ -83,5 +72,28 @@ export class AppointmentList implements OnInit {
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${y}-${m}-${day}`;
+  }
+
+  // Confirma o cancelamento com alert
+  confirmCancel(id: number): void {
+    const confirmation = confirm('Você tem certeza de que deseja cancelar este agendamento?');
+    if (confirmation) {
+      this.service.cancel(id).subscribe({
+        next: (updatedAppointment) => {
+          console.log('Agendamento cancelado:', updatedAppointment);
+
+          // Atualiza a lista de agendamentos após o cancelamento
+          this.appointments = this.appointments.filter(
+            ap => ap.id !== updatedAppointment.id
+          );
+          
+          // Chama a função de recarregar para garantir que o estado seja refletido
+          this.load();
+        },
+        error: (err) => {
+          alert('Erro ao cancelar o agendamento!');
+        }
+      });
+    }
   }
 }
