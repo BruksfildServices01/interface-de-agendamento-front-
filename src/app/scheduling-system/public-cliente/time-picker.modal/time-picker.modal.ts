@@ -62,9 +62,20 @@ export class TimePickerModal implements OnInit {
   // =========================
   minDate(): string {
     const d = new Date();
-    d.setMinutes(d.getMinutes() + 120); // regra do backend
-    return d.toISOString().split('T')[0];
+    d.setMinutes(d.getMinutes() + 120);
+
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
+
+  private getWeekday(date: string): number {
+    const [y, m, d] = date.split('-').map(Number);
+    return new Date(y, m - 1, d).getDay();
+  }
+
 
   // =========================
   // WORKING HOURS (1º PASSO)
@@ -84,7 +95,7 @@ export class TimePickerModal implements OnInit {
   load(): void {
     if (!this.date) return;
 
-    const weekday = new Date(this.date).getDay();
+    const weekday = this.getWeekday(this.date)
     const workDay = this.workingHours().find(d => d.weekday === weekday);
 
     // 🚫 DIA FECHADO
@@ -117,7 +128,7 @@ export class TimePickerModal implements OnInit {
   // =========================
   filteredSlots = computed(() => {
     const period = this.period();
-    const weekday = new Date(this.date).getDay();
+    const weekday = this.getWeekday(this.date);
     const workDay = this.workingHours().find(d => d.weekday === weekday);
 
     if (!workDay || !workDay.active) return [];
@@ -137,6 +148,7 @@ export class TimePickerModal implements OnInit {
       return true;
     });
   });
+
 
   // =========================
   // PICK
