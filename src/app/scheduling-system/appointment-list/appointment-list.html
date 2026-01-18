@@ -5,7 +5,7 @@
     <div class="ap__header-left">
       <h1 class="ap__title">Agendamentos marcados</h1>
       <span class="ap__subtitle">
-        {{ selectedDate | date:'fullDate' }}
+        {{ formattedDate | date:'fullDate' }}
       </span>
     </div>
 
@@ -22,8 +22,13 @@
     Carregando agendamentos…
   </div>
 
+  <!-- ERROR -->
+  <div *ngIf="!loading && error" class="ap__state ap__state--error">
+    {{ error }}
+  </div>
+
   <!-- LISTA -->
-  <div class="ap__list" *ngIf="!loading">
+  <div class="ap__list" *ngIf="!loading && !error">
 
     <article
       class="ap-card"
@@ -60,15 +65,13 @@
           “{{ ap.notes }}”
         </div>
 
-        <!-- BOTÃO CANCELAR -->
+        <!-- AÇÕES -->
         <div *ngIf="ap.status === 'scheduled'" class="ap-card__actions">
-          <button
-            class="btn danger"
-            (click)="confirmCancel(ap.id)"
-          >
+          <button class="btn danger" (click)="confirmCancel(ap.id)">
             Cancelar
           </button>
         </div>
+
       </div>
     </article>
 

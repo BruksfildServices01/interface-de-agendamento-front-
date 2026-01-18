@@ -22,60 +22,82 @@ import { BarberProductModal } from './barber-product-modal/barber-product-modal'
   styleUrls: ['./barber-product-list.scss'],
 })
 export class BarberProductList implements OnInit {
+
   constructor(
-    private barberProductService: BarberProductService,
-    private cdr: ChangeDetectorRef
+    private service: BarberProductService,
+    private cdr: ChangeDetectorRef // ✅ VOLTOU
   ) {}
 
+  // =========================
+  // DATA
+  // =========================
   products: BarberProduct[] = [];
+  filtered: BarberProduct[] = [];
 
+  // =========================
+  // STATE
+  // =========================
   loading = false;
   error: string | null = null;
 
-  /* filtros */
+  // =========================
+  // FILTERS
+  // =========================
   filterText = '';
   filterCategory = '';
   filterPrice = '';
 
-  /* modal */
+  // =========================
+  // MODAL
+  // =========================
   showCreateModal = false;
 
   ngOnInit(): void {
     this.loadProducts();
   }
 
-  /* =========================
-     LISTAGEM
-  ========================= */
-
+  // =========================
+  // LOAD
+  // =========================
   loadProducts(): void {
     this.loading = true;
     this.error = null;
+    this.cdr.detectChanges(); // 🔥 mostra loading
 
-    this.barberProductService.getProducts().subscribe({
+    this.service.getProducts().subscribe({
       next: (data) => {
         this.products = data;
+        this.applyFilters();
         this.loading = false;
-        this.cdr.detectChanges(); // 🔥 garante render
+
+        this.cdr.detectChanges(); // 🔥 renderiza lista
       },
       error: () => {
         this.error = 'Erro ao carregar serviços.';
         this.loading = false;
-        this.cdr.detectChanges();
+
+        this.cdr.detectChanges(); // 🔥 renderiza erro
       },
     });
   }
 
-  get filteredProducts(): BarberProduct[] {
+  // =========================
+  // FILTER LOGIC
+  // =========================
+  applyFilters(): void {
     let list = [...this.products];
 
     if (this.filterText) {
       const t = this.filterText.toLowerCase();
-      list = list.filter(p => p.name.toLowerCase().includes(t));
+      list = list.filter(p =>
+        p.name.toLowerCase().includes(t)
+      );
     }
 
     if (this.filterCategory) {
-      list = list.filter(p => p.category === this.filterCategory);
+      list = list.filter(
+        p => p.category === this.filterCategory
+      );
     }
 
     if (this.filterPrice === 'low') {
@@ -86,13 +108,19 @@ export class BarberProductList implements OnInit {
       list.sort((a, b) => b.price - a.price);
     }
 
-    return list;
+    this.filtered = list;
   }
 
-  /* =========================
-     MODAL
-  ========================= */
+  // =========================
+  // FILTER EVENTS
+  // =========================
+  onFilterChange(): void {
+    this.applyFilters();
+  }
 
+  // =========================
+  // MODAL
+  // =========================
   openCreate(): void {
     this.showCreateModal = true;
     this.cdr.detectChanges(); // 🔥 abre imediatamente
@@ -105,21 +133,17 @@ export class BarberProductList implements OnInit {
 
   saveProduct(dto: CreateBarberProductDTO): void {
     this.loading = true;
-    this.cdr.detectChanges();
+    this.cdr.detectChanges(); // 🔥 bloqueia UI
 
-    this.barberProductService.createProduct(dto).subscribe({
+    this.service.createProduct(dto).subscribe({
       next: () => {
-        this.loading = false;
         this.showCreateModal = false;
-
-        // 🔥 ISSO É O QUE FALTAVA
-        this.cdr.detectChanges();
-
-        this.loadProducts();
+        this.loadProducts(); // 🔥 recarrega lista
       },
       error: () => {
-        this.loading = false;
         this.error = 'Erro ao criar serviço.';
+        this.loading = false;
+
         this.cdr.detectChanges();
       },
     });

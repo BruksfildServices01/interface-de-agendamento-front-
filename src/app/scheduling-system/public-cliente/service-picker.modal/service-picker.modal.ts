@@ -4,9 +4,8 @@ import {
   Output,
   EventEmitter,
   signal,
-  inject,
   computed,
-  effect,
+  OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,8 +20,9 @@ import { PublicService } from '../../../model/client.model';
   templateUrl: './service-picker.modal.html',
   styleUrls: ['./service-picker.modal.scss'],
 })
-export class ServicePickerModal {
-  private clientService = inject(ClientService);
+export class ServicePickerModal implements OnInit {
+
+  constructor(private clientService: ClientService) {}
 
   // =========================
   // INPUT / OUTPUT
@@ -32,7 +32,7 @@ export class ServicePickerModal {
   @Output() close = new EventEmitter<void>();
 
   // =========================
-  // ESTADO BASE
+  // STATE
   // =========================
   services = signal<PublicService[]>([]);
   loading = signal(false);
@@ -46,46 +46,41 @@ export class ServicePickerModal {
   minDuration?: number;
   maxDuration?: number;
 
-  // =========================
-  // FILTROS APLICADOS (USADOS)
-  // =========================
-  appliedFilters = signal<{
-    query: string;
-    minPrice?: number;
-    maxPrice?: number;
-    minDuration?: number;
-    maxDuration?: number;
-  }>({
-    query: '',
-  });
-
   filtersOpen = false;
 
-  constructor() {
-    // 🔥 carrega serviços quando slug estiver disponível
-    effect(() => {
-      if (this.slug) {
-        this.load();
-      }
-    });
+  appliedFilters = signal({
+    query: '',
+    minPrice: undefined as number | undefined,
+    maxPrice: undefined as number | undefined,
+    minDuration: undefined as number | undefined,
+    maxDuration: undefined as number | undefined,
+  });
+
+  // =========================
+  // INIT
+  // =========================
+  ngOnInit(): void {
+    this.load();
   }
 
   // =========================
-  // LOAD (BACKEND)
+  // LOAD
   // =========================
   load(): void {
     this.loading.set(true);
 
-    this.clientService
-      .getServices(this.slug)
-      .subscribe({
-        next: (res) => this.services.set(res.products),
-        complete: () => this.loading.set(false),
-      });
+    this.clientService.getServices(this.slug).subscribe({
+      next: (res) => {
+        this.services.set(res.products || []);
+      },
+      complete: () => {
+        this.loading.set(false);
+      },
+    });
   }
 
   // =========================
-  // APLICAR FILTROS (BOTÃO)
+  // FILTROS
   // =========================
   applyFilters(): void {
     this.appliedFilters.set({
@@ -95,30 +90,16 @@ export class ServicePickerModal {
       minDuration: this.minDuration,
       maxDuration: this.maxDuration,
     });
-
     this.filtersOpen = false;
   }
 
   // =========================
-  // LIMPAR FILTROS
-  // =========================
-  clearFilters(): void {
-    this.query = '';
-    this.minPrice = undefined;
-    this.maxPrice = undefined;
-    this.minDuration = undefined;
-    this.maxDuration = undefined;
-
-    this.appliedFilters.set({ query: '' });
-  }
-
-  // =========================
-  // LISTA FILTRADA (UX)
+  // LISTA FILTRADA
   // =========================
   filteredServices = computed(() => {
     const f = this.appliedFilters();
 
-    return this.services().filter((s) => {
+    return this.services().filter(s => {
       if (f.query && !s.name.toLowerCase().includes(f.query.toLowerCase())) {
         return false;
       }
@@ -131,7 +112,7 @@ export class ServicePickerModal {
   });
 
   // =========================
-  // AÇÃO
+  // ACTION
   // =========================
   pick(service: PublicService): void {
     this.select.emit(service);

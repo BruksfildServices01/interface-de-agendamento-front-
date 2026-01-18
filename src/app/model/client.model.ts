@@ -53,3 +53,5 @@ export interface PublicCreateAppointmentRequest {
   time: string; // HH:mm
   notes?: string;
 }
+
+

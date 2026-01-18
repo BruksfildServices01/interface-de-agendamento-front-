@@ -20,6 +20,7 @@ import { TimePickerModal } from '../time-picker.modal/time-picker.modal';
   styleUrls: ['./public-booking.scss'],
 })
 export class PublicBooking {
+
   private route = inject(ActivatedRoute);
   private clientService = inject(ClientService);
 
@@ -50,6 +51,9 @@ export class PublicBooking {
     this.slug.set(this.route.snapshot.paramMap.get('slug') || '');
   }
 
+  // =========================
+  // SELEÇÕES
+  // =========================
   onServiceSelected(service: PublicService) {
     this.selectedService.set(service);
     this.selectedDate.set(null);
@@ -63,6 +67,9 @@ export class PublicBooking {
     this.timeModalOpen.set(false);
   }
 
+  // =========================
+  // VALIDAÇÃO
+  // =========================
   canSubmit = computed(() =>
     !!this.selectedService() &&
     !!this.selectedDate() &&
@@ -72,20 +79,25 @@ export class PublicBooking {
     !this.loading()
   );
 
-  confirm() {
-    if (!this.canSubmit()) return;
+  // =========================
+  // CONFIRMAR
+  // =========================
 
+  confirm() {
+    if (!this.canSubmit() || this.loading()) return;
+
+    this.loading.set(true);
+
+    // ✅ USA O MODEL DO FRONT
     const payload: PublicCreateAppointmentRequest = {
-      clientName: this.clientName(),
-      clientPhone: this.clientPhone(),
-      clientEmail: this.clientEmail() || undefined,
+      clientName: this.clientName().trim(),
+      clientPhone: this.clientPhone().trim(),
+      clientEmail: this.clientEmail()?.trim() || undefined,
       productId: this.selectedService()!.id,
       date: this.selectedDate()!,
       time: this.selectedTime()!,
-      notes: this.notes() || undefined,
+      notes: this.notes()?.trim() || undefined,
     };
-
-    this.loading.set(true);
 
     this.clientService.createAppointment(this.slug(), payload).subscribe({
       next: () => {
@@ -94,19 +106,33 @@ export class PublicBooking {
           date: this.selectedDate()!,
           time: this.selectedTime()!,
         });
+
         this.success.set(true);
-        this.resetForm();
       },
-      complete: () => this.loading.set(false),
+      error: (err) => {
+        console.error('Erro backend:', err.error);
+        alert('Erro ao criar agendamento. Verifique os dados.');
+      },
+      complete: () => {
+        this.loading.set(false);
+      },
     });
   }
 
+
+  // =========================
+  // SUCCESS
+  // =========================
   closeSuccess() {
     this.success.set(false);
     this.createdAppointment.set(null);
+    this.resetForm();
   }
 
-  resetForm() {
+  // =========================
+  // RESET
+  // =========================
+  private resetForm() {
     this.selectedService.set(null);
     this.selectedDate.set(null);
     this.selectedTime.set(null);

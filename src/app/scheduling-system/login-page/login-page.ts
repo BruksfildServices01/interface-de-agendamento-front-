@@ -3,8 +3,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AuthApi } from '../../service/auth/auth.api';
-import { TokenStorage } from '../../service/auth/token.storage';
+import { AuthService } from '../../service/auth/auth.service';
 
 @Component({
   standalone: true,
@@ -14,8 +13,7 @@ import { TokenStorage } from '../../service/auth/token.storage';
   styleUrls: ['./login-page.scss'],
 })
 export class LoginPage {
-  private authApi = inject(AuthApi);
-  private tokenStorage = inject(TokenStorage);
+  private auth = inject(AuthService);
   private router = inject(Router);
 
   // =========================
@@ -24,8 +22,11 @@ export class LoginPage {
   email = signal('');
   password = signal('');
 
-  loading = signal(false);
-  errorMessage = signal<string | null>(null);
+  // =========================
+  // UI STATE (delegado)
+  // =========================
+  loading = this.auth.loading;
+  errorMessage = this.auth.error;
 
   // =========================
   // VALIDATION
@@ -43,38 +44,8 @@ export class LoginPage {
   // =========================
   login(): void {
     if (!this.canSubmit()) return;
-
-    // 🔥 LIMPA QUALQUER TOKEN ANTIGO (REGRA DE OURO)
-    this.tokenStorage.clear();
-
-    this.loading.set(true);
-    this.errorMessage.set(null);
-
-    this.authApi
-      .login(this.email().trim(), this.password().trim())
-      .subscribe({
-        next: (res) => {
-          this.tokenStorage.set(res.token);
-
-          this.router.navigateByUrl('/home', {
-            replaceUrl: true,
-          });
-        },
-        error: (err: any) => {
-          const msg =
-            err?.error?.message ||
-            err?.message ||
-            'Email ou senha inválidos.';
-
-          this.errorMessage.set(msg);
-          this.loading.set(false);
-        },
-        complete: () => {
-          this.loading.set(false);
-        },
-      });
+    this.auth.login(this.email(), this.password());
   }
-
 
   // =========================
   // REGISTER
@@ -82,5 +53,4 @@ export class LoginPage {
   goToRegister(): void {
     this.router.navigateByUrl('/auth/register');
   }
-
 }

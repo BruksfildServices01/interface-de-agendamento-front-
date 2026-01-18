@@ -14,20 +14,16 @@
        Filtros fixos
   ========================= -->
   <div class="bp__filters">
-    <input
-      type="text"
-      placeholder="Buscar serviço"
-      [(ngModel)]="filterText"
-    />
+    <input [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" />
 
-    <select [(ngModel)]="filterCategory">
+    <select [(ngModel)]="filterCategory" (ngModelChange)="onFilterChange()">
       <option value="">Categoria</option>
       <option value="corte">Corte</option>
       <option value="barba">Barba</option>
       <option value="combo">Combo</option>
     </select>
 
-    <select [(ngModel)]="filterPrice">
+    <select [(ngModel)]="filterPrice" (ngModelChange)="onFilterChange()">
       <option value="">Preço</option>
       <option value="low">Mais barato</option>
       <option value="high">Mais caro</option>
@@ -49,10 +45,7 @@
        Lista (ÚNICO SCROLL)
   ========================= -->
   <div class="bp__list" *ngIf="!loading && !error">
-    <article
-      class="bp-card"
-      *ngFor="let product of filteredProducts"
-    >
+    <article class="bp-card" *ngFor="let product of filtered">
       <div class="bp-card__main">
         <h3 class="bp-card__name">
           {{ product.name }}
@@ -63,47 +56,31 @@
           {{ product.durationMin }} min
         </p>
 
-        <p
-          class="bp-card__desc"
-          *ngIf="product.description"
-        >
+        <p class="bp-card__desc" *ngIf="product.description">
           {{ product.description }}
         </p>
       </div>
 
       <div class="bp-card__actions">
-        <button
-          class="bp-card__edit"
-          type="button"
-        >
+        <button class="bp-card__edit" type="button">
           Editar
         </button>
 
-        <button
-          class="bp-card__delete"
-          type="button"
-        >
+        <button class="bp-card__delete" type="button">
           Excluir
         </button>
       </div>
     </article>
 
-    <div *ngIf="filteredProducts.length === 0" class="bp__state">
+    <div *ngIf="filtered.length === 0" class="bp__state">
       Nenhum serviço encontrado.
     </div>
+
   </div>
 </section>
 
 <!-- =========================
      MODAL — FORA DA SECTION
 ========================= -->
-<app-barber-product-modal
-  [open]="showCreateModal"
-  [loading]="loading"
-  (close)="closeCreate()"
-  (save)="saveProduct($event)"
-></app-barber-product-modal>
-
-
-
-
+<app-barber-product-modal [open]="showCreateModal" [loading]="loading" (close)="closeCreate()"
+  (save)="saveProduct($event)"></app-barber-product-modal>

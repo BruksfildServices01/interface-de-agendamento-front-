@@ -9,15 +9,27 @@ import { environment } from '../../environments/environment.prod';
 export class WorkingHoursService {
   private readonly apiUrl = `${environment.apiUrl}/me/working-hours`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /** 🔄 Carrega horários do backend */
   get(): Observable<WorkingDay[]> {
     return this.http.get<WorkingDay[]>(this.apiUrl);
   }
 
-  /** 💾 Salva horários */
   update(days: WorkingDay[]): Observable<void> {
-    return this.http.put<void>(this.apiUrl, days);
-  }
+  const payload = {
+    days: days.map(d => ({
+      weekday: d.weekday,
+      active: d.active,
+      start_time: d.start_time || '',
+      end_time: d.end_time || '',
+      lunch_start: d.lunch_start || '',
+      lunch_end: d.lunch_end || '',
+    }))
+  };
+
+  return this.http.put<void>(this.apiUrl, payload);
+}
+
+
 }

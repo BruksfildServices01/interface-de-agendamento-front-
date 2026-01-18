@@ -14,7 +14,6 @@
     [class.public-card--selected]="selectedService()"
     (click)="serviceModalOpen.set(true)"
   >
-    <!-- NÃO SELECIONADO -->
     <ng-container *ngIf="!selectedService()">
       <div class="public-card__row">
         <div class="public-card__content">
@@ -25,7 +24,6 @@
       </div>
     </ng-container>
 
-    <!-- SELECIONADO -->
     <ng-container *ngIf="selectedService() as service">
       <div class="public-card__badge">✓ Serviço selecionado</div>
 
@@ -51,7 +49,6 @@
     [class.disabled]="!selectedService()"
     (click)="selectedService() && timeModalOpen.set(true)"
   >
-    <!-- NÃO SELECIONADO -->
     <ng-container *ngIf="!selectedDate() || !selectedTime()">
       <div class="public-card__row">
         <div class="public-card__content">
@@ -62,7 +59,6 @@
       </div>
     </ng-container>
 
-    <!-- SELECIONADO -->
     <ng-container *ngIf="selectedDate() && selectedTime()">
       <div class="public-card__badge">✓ Horário selecionado</div>
 
@@ -99,21 +95,21 @@
     <button
       type="button"
       class="public-cta__btn"
-      [disabled]="!canSubmit()"
+      [disabled]="!canSubmit() || loading()"
       (click)="confirm()"
     >
-      Confirmar agendamento
+      {{ loading() ? 'Confirmando...' : 'Confirmar agendamento' }}
     </button>
   </div>
 
 </section>
 
-<!-- OVERLAY GERAL -->
+<!-- OVERLAY -->
 <div class="tm-overlay"
   *ngIf="serviceModalOpen() || timeModalOpen() || success()">
 </div>
 
-<!-- MODAL — SERVIÇOS -->
+<!-- MODAIS -->
 <app-service-picker-modal
   *ngIf="serviceModalOpen()"
   [slug]="slug()"
@@ -121,7 +117,6 @@
   (close)="serviceModalOpen.set(false)"
 />
 
-<!-- MODAL — HORÁRIOS -->
 <app-time-picker-modal
   *ngIf="timeModalOpen() && selectedService()"
   [slug]="slug()"
@@ -130,7 +125,7 @@
   (close)="timeModalOpen.set(false)"
 />
 
-<!-- MODAL — CONFIRMAÇÃO -->
+<!-- SUCCESS -->
 <div class="success-modal" *ngIf="success()">
   <div class="success-modal__card">
 

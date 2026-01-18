@@ -86,21 +86,28 @@ createAppointment(
   payload: PublicCreateAppointmentRequest
 ): Observable<any> {
 
-  // 🔥 CONVERSÃO camelCase → snake_case
-  const body = {
-    client_name: payload.clientName,
-    client_phone: payload.clientPhone,
-    client_email: payload.clientEmail,
+  const body: any = {
+    client_name: payload.clientName.trim(),
+    client_phone: payload.clientPhone.trim(),
     product_id: payload.productId,
     date: payload.date,
     time: payload.time,
-    notes: payload.notes,
   };
+
+  // ✅ só envia se existir
+  if (payload.clientEmail?.trim()) {
+    body.client_email = payload.clientEmail.trim();
+  }
+
+  if (payload.notes?.trim()) {
+    body.notes = payload.notes.trim();
+  }
 
   return this.http.post(
     `${this.baseUrl}/public/${slug}/appointments`,
     body
   );
 }
+
 
 }

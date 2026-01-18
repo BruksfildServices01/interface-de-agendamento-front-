@@ -8,12 +8,17 @@
     </p>
   </header>
 
+  <!-- LOADING -->
+  <div *ngIf="loading" class="wd__state">
+    Carregando horários…
+  </div>
+
   <!-- LISTA DE DIAS -->
-  <div class="wd__days">
+  <div class="wd__days" *ngIf="!loading">
     <button
       type="button"
       class="wd-day"
-      *ngFor="let day of days()"
+      *ngFor="let day of days"
       (click)="openDay(day)"
       [class.inactive]="!day.active"
     >
@@ -38,18 +43,18 @@
   </div>
 
   <!-- MODAL -->
-  <div class="wd-modal" *ngIf="modalOpen()">
+  <div class="wd-modal" *ngIf="modalOpen">
     <div class="wd-modal__backdrop" (click)="closeModal()"></div>
 
     <div class="wd-modal__card">
       <header class="wd-modal__header">
         <h2>
-          {{ weekdayLabel(editingDay()?.weekday ?? 0) }}
+          {{ weekdayLabel(editingDay?.weekday ?? 0) }}
         </h2>
         <button class="wd-modal__close" (click)="closeModal()">×</button>
       </header>
 
-      <div class="wd-modal__body" *ngIf="editingDay() as day">
+      <div class="wd-modal__body" *ngIf="editingDay as day">
 
         <!-- ATIVO -->
         <label class="wd-toggle">

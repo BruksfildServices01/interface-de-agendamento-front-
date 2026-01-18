@@ -29,7 +29,7 @@
   </div>
 
   <!-- FILTERS -->
-  <div class="time-filters">
+  <div class="time-filters" *ngIf="!dayInactive()">
     <button
       type="button"
       class="time-filter"
@@ -75,8 +75,16 @@
       Carregando horários...
     </p>
 
+    <!-- CLOSED DAY -->
+    <p class="tm-modal__empty" *ngIf="dayInactive()">
+      Barbearia fechada neste dia.
+    </p>
+
     <!-- SLOTS -->
-    <div class="slots" *ngIf="!loading() && filteredSlots().length">
+    <div
+      class="slots"
+      *ngIf="!loading() && !dayInactive() && filteredSlots().length"
+    >
       <button
         class="slot-card"
         *ngFor="let s of filteredSlots()"
@@ -89,7 +97,7 @@
     <!-- EMPTY -->
     <p
       class="tm-modal__empty"
-      *ngIf="!loading() && !filteredSlots().length"
+      *ngIf="!loading() && !dayInactive() && !filteredSlots().length"
     >
       Nenhum horário disponível para este período.
     </p>

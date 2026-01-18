@@ -30,7 +30,7 @@ export class TimePickerModal implements OnInit {
   private workingHoursService = inject(WorkingHoursService);
 
   // =========================
-  // INPUT / OUTPUT
+  // INPUT / OUTPUT (modal)
   // =========================
   @Input({ required: true }) slug!: string;
   @Input({ required: true }) serviceId!: number;
@@ -39,108 +39,112 @@ export class TimePickerModal implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   // =========================
-  // ESTADO
+  // STATE
   // =========================
   date = '';
   slots = signal<TimeSlot[]>([]);
   loading = signal(false);
 
   period = signal<Period>(null);
-  workingHours: WorkingDay[] = [];
+  workingHours = signal<WorkingDay[]>([]);
+  dayInactive = signal(false);
 
+  // =========================
+  // INIT
+  // =========================
   ngOnInit(): void {
     this.date = this.minDate();
     this.loadWorkingHours();
-    this.load();  // Carrega os horários disponíveis assim que o componente é inicializado
   }
 
   // =========================
   // DATA MÍNIMA
   // =========================
   minDate(): string {
-    return new Date().toISOString().split('T')[0];
+    const d = new Date();
+    d.setMinutes(d.getMinutes() + 120); // regra do backend
+    return d.toISOString().split('T')[0];
   }
 
   // =========================
-  // LOAD - Carregar Horários Disponíveis
+  // WORKING HOURS (1º PASSO)
+  // =========================
+  loadWorkingHours(): void {
+    this.workingHoursService.get().subscribe({
+      next: (data) => {
+        this.workingHours.set(data || []);
+        this.load(); // 🔥 só depois chama slots
+      },
+    });
+  }
+
+  // =========================
+  // LOAD SLOTS (2º PASSO)
   // =========================
   load(): void {
     if (!this.date) return;
 
+    const weekday = new Date(this.date).getDay();
+    const workDay = this.workingHours().find(d => d.weekday === weekday);
+
+    // 🚫 DIA FECHADO
+    if (!workDay || !workDay.active) {
+      this.dayInactive.set(true);
+      this.slots.set([]);
+      return;
+    }
+
+    this.dayInactive.set(false);
     this.loading.set(true);
 
     this.clientService
       .getAvailability(this.slug, this.date, this.serviceId)
       .subscribe({
-        next: (res) => this.slots.set(res.slots || []),  // Atualiza os slots com os horários disponíveis
+        next: (res) => this.slots.set(res.slots || []),
         complete: () => this.loading.set(false),
       });
   }
 
   // =========================
-  // FILTRO DE PERÍODO
+  // PERIOD FILTER (UX)
   // =========================
   setPeriod(p: Period): void {
     this.period.set(p);
   }
 
   // =========================
-  // FILTRAGEM DOS SLOTS
+  // FILTERED SLOTS (FRONT ONLY)
   // =========================
   filteredSlots = computed(() => {
     const period = this.period();
-    const dayOfWeek = new Date(this.date).getDay();  // Dia da semana (0 = Domingo, 1 = Segunda-feira, etc.)
+    const weekday = new Date(this.date).getDay();
+    const workDay = this.workingHours().find(d => d.weekday === weekday);
 
-    // Filtra apenas os slots dentro do horário de trabalho
-    const workStart = this.getWorkStartTime(dayOfWeek);
-    const workEnd = this.getWorkEndTime(dayOfWeek);
+    if (!workDay || !workDay.active) return [];
 
-    return this.slots().filter((s) => {
-      const slotTime = Number(s.start.split(':')[0]);  // Pegando a hora do slot
+    const start = Number(workDay.start_time.split(':')[0]);
+    const end = Number(workDay.end_time.split(':')[0]);
 
-      // Verificando se o horário está dentro do horário de trabalho
-      if (slotTime < workStart || slotTime >= workEnd) {
-        return false;
-      }
+    return this.slots().filter(s => {
+      const hour = Number(s.start.split(':')[0]);
 
-      // Filtra os slots com base no período selecionado
-      if (period === 'morning' && slotTime >= 12) return false;
-      if (period === 'afternoon' && (slotTime < 12 || slotTime >= 18)) return false;
-      if (period === 'evening' && slotTime < 18) return false;
+      if (hour < start || hour >= end) return false;
+
+      if (period === 'morning' && hour >= 12) return false;
+      if (period === 'afternoon' && (hour < 12 || hour >= 18)) return false;
+      if (period === 'evening' && hour < 18) return false;
 
       return true;
     });
   });
 
   // =========================
-  // GET WORKING HOURS (Início e Fim)
-  // =========================
-  getWorkStartTime(day: number): number {
-    const workDay = this.workingHours.find(w => w.weekday === day);
-    return workDay ? parseInt(workDay.start_time.split(':')[0], 10) : 0;
-  }
-
-  getWorkEndTime(day: number): number {
-    const workDay = this.workingHours.find(w => w.weekday === day);
-    return workDay ? parseInt(workDay.end_time.split(':')[0], 10) : 24;
-  }
-
-  // =========================
-  // PICK - Seleção de Horário
+  // PICK
   // =========================
   pick(slot: TimeSlot): void {
     this.select.emit({
       date: this.date,
       time: slot.start,
-    });
-  }
-
-  // =========================
-  // Carregar Horários de Trabalho
-  // =========================
-  loadWorkingHours(): void {
-    this.workingHoursService.get().subscribe((data: WorkingDay[]) => {
-      this.workingHours = data;
     });
   }
 }

@@ -1,10 +1,21 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { finalize, map, tap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { AuthApi } from './auth.api';
 import { TokenStorage } from './token.storage';
+
+// =======================
+// PAYLOADS
+// =======================
+
+export interface RegisterPayload {
+  barbershop_name: string;
+  barbershop_slug: string;
+  name: string;
+  email: string;
+  password: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -12,45 +23,89 @@ export class AuthService {
   private tokenStorage = inject(TokenStorage);
   private router = inject(Router);
 
-  loading = signal(false);
-  error = signal<string | null>(null);
+  // =======================
+  // STATE
+  // =======================
 
-  // Computed para verificar se o usuário está autenticado
+  private loadingSig = signal(false);
+  private errorSig = signal<string | null>(null);
+
+  loading = this.loadingSig.asReadonly();
+  error = this.errorSig.asReadonly();
+
   isAuthenticated = computed(() => this.tokenStorage.hasToken());
 
-  // Método para extrair o token da resposta do backend
-  private extractToken(res: any): string {
-    // Ajuste aqui conforme a estrutura do seu backend (assumindo que a resposta agora tem 'token' ou algo similar)
-    const token = res?.token ?? res?.accessToken ?? res?.jwt;
-    if (!token) throw new Error('Token não retornado pelo backend');
-    return token as string;
+  // =======================
+  // LOGIN
+  // =======================
+
+  login(email: string, password: string): void {
+    if (this.loadingSig()) return;
+
+    this.tokenStorage.clear(); // 🔥 regra de ouro
+    this.loadingSig.set(true);
+    this.errorSig.set(null);
+
+    this.api
+      .login(email.trim(), password.trim())
+      .pipe(finalize(() => this.loadingSig.set(false)))
+      .subscribe({
+        next: (res) => {
+          this.finishAuth(res.token);
+        },
+        error: (err) => {
+          this.errorSig.set(
+            err?.error?.message ||
+              err?.message ||
+              'Email ou senha inválidos.'
+          );
+        },
+      });
   }
 
-  // Finaliza o fluxo de autenticação, salvando o token e redirecionando o usuário
-  private finishAuthFlow(token: string): void {
-    this.tokenStorage.set(token);  // Salva o token
-    this.router.navigateByUrl('/dashboard');  // Redireciona para o dashboard após o login
+  // =======================
+  // REGISTER
+  // =======================
+
+  register(payload: RegisterPayload): void {
+    if (this.loadingSig()) return;
+
+    this.tokenStorage.clear();
+    this.loadingSig.set(true);
+    this.errorSig.set(null);
+
+    this.api
+      .register(payload)
+      .pipe(finalize(() => this.loadingSig.set(false)))
+      .subscribe({
+        next: (res) => {
+          this.finishAuth(res.token);
+        },
+        error: (err) => {
+          this.errorSig.set(
+            err?.error?.message ||
+              err?.message ||
+              'Não foi possível criar sua conta.'
+          );
+        },
+      });
   }
 
-  // Login com email e senha
-  login(email: string, password: string): Observable<void> {
-    this.loading.set(true);  // Marca que está carregando
-    this.error.set(null);  // Limpa erro anterior
+  // =======================
+  // LOGOUT
+  // =======================
 
-    const e = (email ?? '').trim();
-    const p = (password ?? '').trim();
-
-    return this.api.login(e, p).pipe(
-      map((res: any) => this.extractToken(res)),  // Extrai o token da resposta
-      tap((token) => this.finishAuthFlow(token)),  // Salva o token e redireciona
-      map(() => void 0),  // Apenas finaliza o fluxo com 'void'
-      finalize(() => this.loading.set(false))  // Desativa o estado de loading após a requisição
-    );
-  }
-
-  // Logout - Limpa o token e redireciona para a página de login
   logout(): void {
-    this.tokenStorage.clear();  // Limpa o token
-    this.router.navigateByUrl('/login');  // Redireciona para a página de login
+    this.tokenStorage.clear();
+    this.router.navigateByUrl('/auth/login', { replaceUrl: true });
+  }
+
+  // =======================
+  // PRIVATE HELPERS
+  // =======================
+
+  private finishAuth(token: string): void {
+    this.tokenStorage.set(token);
+    this.router.navigateByUrl('/home', { replaceUrl: true });
   }
 }
