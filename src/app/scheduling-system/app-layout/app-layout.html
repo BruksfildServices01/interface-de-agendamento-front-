@@ -20,7 +20,17 @@
           melhor lugar pra gerenciar seus agendamentos
         </p>
       </div>
+
+       <button
+    class="cl-topbar__profile-btn"
+    (click)="goProfile()"
+    aria-label="Perfil"
+    title="Perfil">
+    👤
+  </button>
     </header>
+
+   
 
     <app-menu-lateral-mobile
       *ngIf="mobile"

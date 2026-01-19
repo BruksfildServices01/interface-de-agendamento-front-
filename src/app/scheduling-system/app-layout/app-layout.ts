@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 import { MenuLateralDesktop } from '../../scheduling-system/menu-lateral-desktop/menu-lateral-desktop';
 import { MenuLateralMobile } from '../../scheduling-system/menu-lateral-mobile/menu-lateral-mobile';
@@ -17,12 +17,21 @@ export class AppLayout {
   desktopAberto = true;
   mobileAberto = false;
 
+  constructor(private router: Router) {}
+
   toggleMenu() {
-    this.mobile ? this.mobileAberto = !this.mobileAberto
-                : this.desktopAberto = !this.desktopAberto;
+    this.mobile
+      ? (this.mobileAberto = !this.mobileAberto)
+      : (this.desktopAberto = !this.desktopAberto);
   }
 
   closeMobile() {
     this.mobileAberto = false;
+  }
+
+  // 👤 PERFIL
+  goProfile(): void {
+    this.mobileAberto = false; // fecha menu mobile se estiver aberto
+    this.router.navigateByUrl('/profile');
   }
 }

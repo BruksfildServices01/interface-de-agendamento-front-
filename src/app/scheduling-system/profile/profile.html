@@ -1,0 +1,117 @@
+<section class="cl">
+
+  <!-- =========================
+       HEADER FIXO
+  ========================== -->
+  <header class="cl__header">
+    <button
+      type="button"
+      class="cl__back-btn"
+      aria-label="Voltar"
+      (click)="goBack()"
+    >
+      ←
+    </button>
+
+    <h2 class="cl__title">Perfil da Barbearia</h2>
+  </header>
+
+  <!-- =========================
+       CONTEÚDO
+  ========================== -->
+  <div class="cl__content">
+
+    <!-- LOADING -->
+    <div *ngIf="loading" class="cl__state">
+      Carregando informações…
+    </div>
+
+    <!-- PERFIL -->
+    <div *ngIf="!loading && barbershop" class="profile">
+
+      <!-- =========================
+           HERO
+      ========================== -->
+      <div class="profile-hero">
+        <div class="profile-hero__avatar">✂️</div>
+
+        <div class="profile-hero__info">
+          <strong class="profile-hero__name">
+            {{ barbershop.name }}
+          </strong>
+
+          <span class="profile-hero__slug">
+            /public/{{ barbershop.slug }}
+          </span>
+        </div>
+      </div>
+
+      <!-- =========================
+           INFORMAÇÕES
+      ========================== -->
+      <div class="profile-card card">
+        <h3 class="h3">Informações</h3>
+
+        <div class="profile-field">
+          <label class="profile-field__label">Nome da barbearia</label>
+          <input
+            type="text"
+            class="input"
+            [(ngModel)]="barbershop.name"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label class="profile-field__label">Telefone</label>
+          <input
+            type="text"
+            class="input"
+            [(ngModel)]="barbershop.phone"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label class="profile-field__label">Endereço</label>
+          <input
+            type="text"
+            class="input"
+            [(ngModel)]="barbershop.address"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label class="profile-field__label">Timezone</label>
+          <input
+            type="text"
+            class="input"
+            [(ngModel)]="barbershop.timezone"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label class="profile-field__label">Link público</label>
+          <input
+            type="text"
+            class="input input--disabled"
+            [value]="barbershop.slug"
+            disabled
+          />
+        </div>
+      </div>
+
+      <!-- =========================
+           AÇÃO
+      ========================== -->
+      <div class="profile-actions">
+        <button
+          class="btn btn-primary"
+          [disabled]="saving"
+          (click)="save()"
+        >
+          {{ saving ? 'Salvando…' : 'Salvar alterações' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>

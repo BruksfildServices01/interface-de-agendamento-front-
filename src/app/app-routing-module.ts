@@ -9,6 +9,7 @@ import { AppointmentList } from './scheduling-system/appointment-list/appointmen
 import { BarberProductList } from './scheduling-system/barber-product-list/barber-product-list';
 import { Clients } from './scheduling-system/clients/clients';
 import { HomeMenu } from './scheduling-system/home-menu/home-menu';
+import { Profile } from './scheduling-system/profile/profile';
 
 // =======================
 // PUBLIC
@@ -71,6 +72,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'home', component: HomeMenu },
+      { path: 'profile', component: Profile },
 
       // 📆 Agendamentos
       { path: 'appointments/list', component: AppointmentList },
