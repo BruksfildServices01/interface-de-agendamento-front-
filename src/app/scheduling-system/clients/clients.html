@@ -1,0 +1,73 @@
+<section class="cl">
+
+  <!-- =========================
+       HEADER FIXO
+  ========================== -->
+  <header class="cl__header">
+    <h2 class="cl__title">Clientes</h2>
+  </header>
+
+  <!-- =========================
+       FILTROS FIXOS
+  ========================== -->
+  <div class="cl__filters">
+    <input
+      type="text"
+      class="input"
+      placeholder="Buscar por nome, telefone ou email"
+      [(ngModel)]="search"
+      (ngModelChange)="onSearchChange()"
+    />
+  </div>
+
+  <!-- =========================
+       LISTA (SCROLL ÚNICO)
+  ========================== -->
+  <div class="cl__list">
+
+    <!-- LOADING -->
+    <div *ngIf="loading" class="cl__state">
+      Carregando clientes…
+    </div>
+
+    <!-- EMPTY -->
+    <div *ngIf="!loading && clients.length === 0" class="cl__state">
+      Nenhum cliente encontrado.
+    </div>
+
+    <!-- CARDS -->
+    <div
+      class="cl-card"
+      *ngFor="let client of clients"
+      (click)="openClient(client)"
+    >
+      <div class="cl-card__main">
+        <div class="cl-card__name">
+          {{ client.name }}
+        </div>
+
+        <div class="cl-card__meta">
+          {{ client.phone }}
+        </div>
+
+        <div class="cl-card__meta cl-card__meta--email" *ngIf="client.email">
+          {{ client.email }}
+        </div>
+      </div>
+
+      <div class="cl-card__chevron">›</div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =========================
+     MODAL DE DETALHES
+========================== -->
+<app-client-details-modal
+  *ngIf="selectedClient"
+  [client]="selectedClient"
+  [isOpen]="modalOpen"
+  (close)="closeModal()">
+</app-client-details-modal>

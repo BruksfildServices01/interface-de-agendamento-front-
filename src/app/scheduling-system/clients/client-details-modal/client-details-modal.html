@@ -1,0 +1,46 @@
+<!-- BACKDROP -->
+<div
+  class="tm-backdrop"
+  *ngIf="isOpen"
+  (click)="onClose()"
+></div>
+
+<!-- MODAL -->
+<div class="tm" *ngIf="isOpen">
+  <div class="tm__panel">
+
+    <!-- HEADER FIXO -->
+    <header class="tm__header">
+      <h3 class="tm__title">Cliente</h3>
+
+      <button
+        type="button"
+        class="btn btn-outline"
+        (click)="onClose()"
+      >
+        Fechar
+      </button>
+    </header>
+
+    <!-- CONTEÚDO -->
+    <div class="tm__content">
+
+      <div class="tm__item">
+        <span class="tm__label">Nome</span>
+        <span class="tm__value">{{ client.name }}</span>
+      </div>
+
+      <div class="tm__item">
+        <span class="tm__label">Telefone</span>
+        <span class="tm__value">{{ client.phone }}</span>
+      </div>
+
+      <div class="tm__item" *ngIf="client.email">
+        <span class="tm__label">Email</span>
+        <span class="tm__value">{{ client.email }}</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>

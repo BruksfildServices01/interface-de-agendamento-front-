@@ -8,7 +8,7 @@ import { BarbershopService } from '../../service/api/barbershop.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home-menu.html',
-  styleUrl: './home-menu.scss',
+  styleUrls: ['./home-menu.scss'],
 })
 export class HomeMenu {
   private router = inject(Router);
@@ -24,6 +24,9 @@ export class HomeMenu {
     });
   }
 
+  // =============================
+  // NAVIGATION
+  // =============================
   goAppointments(): void {
     this.router.navigateByUrl('/appointments/list');
   }
@@ -32,10 +35,17 @@ export class HomeMenu {
     this.router.navigateByUrl('/barber-products');
   }
 
+  goClients(): void {
+    this.router.navigateByUrl('/clientes');
+  }
+
   goWorkingHours(): void {
     this.router.navigateByUrl('/appointments/create');
   }
 
+  // =============================
+  // PUBLIC LINK
+  // =============================
   copyAffiliateLink(): void {
     const link = `${window.location.origin}/public/${this.slug}`;
     navigator.clipboard.writeText(link);

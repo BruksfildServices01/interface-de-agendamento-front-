@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppointmentCreate } from './scheduling-system/appointment-create/appointment-create';
 import { AppointmentList } from './scheduling-system/appointment-list/appointment-list';
 import { BarberProductList } from './scheduling-system/barber-product-list/barber-product-list';
+import { Clients } from './scheduling-system/clients/clients';
 import { HomeMenu } from './scheduling-system/home-menu/home-menu';
 
 // =======================
@@ -49,8 +50,16 @@ const routes: Routes = [
     path: 'auth',
     component: AuthLayout,
     children: [
-      { path: 'login', component: LoginPage, canActivate: [NoAuthGuard] },
-      { path: 'register', component: RegisterPage, canActivate: [NoAuthGuard] },
+      {
+        path: 'login',
+        component: LoginPage,
+        canActivate: [NoAuthGuard],
+      },
+      {
+        path: 'register',
+        component: RegisterPage,
+        canActivate: [NoAuthGuard],
+      },
       { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
   },
@@ -62,9 +71,18 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'home', component: HomeMenu },
+
+      // 📆 Agendamentos
       { path: 'appointments/list', component: AppointmentList },
       { path: 'appointments/create', component: AppointmentCreate },
+
+      // ✂️ Serviços
       { path: 'barber-products', component: BarberProductList },
+
+      // 👥 Clientes  ✅ AQUI
+      { path: 'clientes', component: Clients },
+
+      // default
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },

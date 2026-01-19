@@ -1,0 +1,144 @@
+/* ==================================================
+   CONTAINER
+================================================== */
+.cl {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0; /* ESSENCIAL p/ scroll */
+}
+
+/* =========================
+   HEADER FIXO
+========================= */
+.cl__header {
+  flex-shrink: 0;
+
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+
+  padding: var(--space-4);
+  background: rgba(2, 6, 23, 0.9);
+  backdrop-filter: blur(10px);
+
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.cl__title {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+}
+
+/* =========================
+   FILTROS FIXOS
+========================= */
+.cl__filters {
+  flex-shrink: 0;
+
+  padding: var(--space-3);
+  background: var(--bg-body);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* =========================
+   LISTA (SCROLL ÚNICO)
+========================= */
+.cl__list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =========================
+   CARD DO CLIENTE
+========================= */
+.cl-card {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+
+  /* destaque lateral */
+  border-left: 3px solid transparent;
+
+  transition:
+    background 0.15s ease,
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.15s ease;
+}
+
+.cl-card:hover {
+  background: var(--bg-hover);
+  border-left-color: var(--primary-soft);
+}
+
+.cl-card:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-medium);
+  border-left-color: var(--primary);
+}
+
+/* =========================
+   CONTEÚDO
+========================= */
+.cl-card__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Nome → maior peso visual */
+.cl-card__name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+/* Meta */
+.cl-card__meta {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+/* Email levemente destacado */
+.cl-card__meta--email {
+  color: var(--text-soft);
+}
+
+/* =========================
+   Chevron
+========================= */
+.cl-card__chevron {
+  font-size: 1.4rem;
+  opacity: 0.35;
+  color: var(--text-muted);
+}
+
+/* =========================
+   ESTADOS
+========================= */
+.cl__state {
+  padding: var(--space-4);
+  text-align: center;
+  color: var(--text-muted);
+}
