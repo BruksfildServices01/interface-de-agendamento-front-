@@ -8,7 +8,7 @@ import {
   CreateAppointmentDTO,
 } from '../../model/appointment.model';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({ providedIn: 'root' })
 export class AppointmentService {
